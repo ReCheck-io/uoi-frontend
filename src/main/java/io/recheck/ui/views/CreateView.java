@@ -109,7 +109,9 @@ public class CreateView extends Div {
         //                  EVENTS
         //=================================================
         createButton.addClickListener(e -> {
-            sessionService.getDataProvider().add(restClientService.newUOI(countryCodeField.getValue(), levelField.getValue(), parentUOIField.getValue()));
+            UOINode uoiNode = restClientService.newUOI(countryCodeField.getValue(), levelField.getValue(), parentUOIField.getValue());
+            uoiNode.setCountryCode(countryCodeField.getValue());
+            sessionService.getDataProvider().add(uoiNode);
             grid.getDataProvider().refreshAll();
             grid.getColumns().forEach(c -> c.setAutoWidth(true));
             clearFormLayoutFields();
