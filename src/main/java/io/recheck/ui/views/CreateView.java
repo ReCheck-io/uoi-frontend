@@ -1,6 +1,7 @@
 package io.recheck.ui.views;
 
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dependency.CssImport;
@@ -9,7 +10,6 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Label;
-import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -32,6 +32,9 @@ import java.util.stream.Collectors;
 @PageTitle("Create / Update")
 public class CreateView extends Div {
 
+    private RestClientService restClientService;
+    private SessionService sessionService;
+
     private HorizontalLayout mainCreateLayout = new HorizontalLayout();
     private VerticalLayout createResultLayout = new VerticalLayout();
 
@@ -52,20 +55,27 @@ public class CreateView extends Div {
     private HorizontalLayout propertiesLayout = new HorizontalLayout();
     private VerticalLayout propertiesLayoutVert = new VerticalLayout();
 
-    private HorizontalLayout propertiesLayoutTitleButtons = new HorizontalLayout();
+    private VerticalLayout propertiesLayoutHeader = new VerticalLayout();
     private H3 propertiesTitle = new H3("Properties");
+    private final String PROPERTIES_UOI_TEXT = "Edit for : ";
+    private Text propertiesUOIText = new Text(PROPERTIES_UOI_TEXT);
+    private HorizontalLayout propertiesLayoutButtons = new HorizontalLayout();
     private Button propertiesAddButton = new Button("Add");
+    private Button propertiesUpdateButton = new Button("Update");
 
     private HorizontalLayout propertiesLayoutLabels = new HorizontalLayout();
     private Label propertiesKeyLabel = new Label("Key:");
     private Label propertiesValueLabel = new Label("Value:");
 
     public CreateView(@Autowired RestClientService restClientService, @Autowired SessionService sessionService) {
+        this.restClientService = restClientService;
+        this.sessionService = sessionService;
+
         addClassName("create-view");
 
         //Create layout
         createResultLayout.getStyle().clear();
-        createResultLayout.addClassName("createResultLayout");
+        createResultLayout.addClassName("createResultLayout"); //CSS class - width & padding for create form & table results
 
         countryCodeField.setPlaceholder("countryCode");
         levelField.setItems(Arrays.stream(LEVEL.values()).map(Enum::name).collect(Collectors.toList()));
@@ -92,11 +102,11 @@ public class CreateView extends Div {
 
 
         //Properties layout
-        propertiesLayoutTitleButtons.add(propertiesTitle, propertiesAddButton);
-        propertiesLayoutTitleButtons.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
-        propertiesValueLabel.addClassName("valueLabel");
+        propertiesLayoutButtons.add(propertiesUpdateButton, propertiesAddButton);
+        propertiesLayoutHeader.add(propertiesTitle, propertiesUOIText, propertiesLayoutButtons);
+        propertiesValueLabel.addClassName("valueLabel"); //CSS class to align vertically with text fields below
         propertiesLayoutLabels.add(propertiesKeyLabel, propertiesValueLabel);
-        propertiesLayoutVert.add(propertiesLayoutTitleButtons, propertiesLayoutLabels);
+        propertiesLayoutVert.add(propertiesLayoutHeader, propertiesLayoutLabels);
         propertiesLayout.add(propertiesLayoutVert);
 
         //Main layout & default state
@@ -114,15 +124,14 @@ public class CreateView extends Div {
             sessionService.getDataProvider().add(uoiNode);
             grid.getDataProvider().refreshAll();
             grid.getColumns().forEach(c -> c.setAutoWidth(true));
-            clearFormLayoutFields();
+            clearCreateFormFields();
         });
 
         updateButton.addClickListener(e -> {
-            UOINode uoiNode = grid.getSelectedItems().iterator().next();
-            Map<String, String> properties = getProperties();
-            restClientService.updateProperties(uoiNode.getUoi(), properties);
-            uoiNode.setProperties(properties);
-            toCreateState();
+            update();
+        });
+        propertiesUpdateButton.addClickListener(e -> {
+            update();
         });
 
         cancelButton.addClickListener(e -> toCreateState());
@@ -133,6 +142,7 @@ public class CreateView extends Div {
             UOINode item = event.getItem();
             grid.select(item);
 
+            propertiesUOIText.setText(PROPERTIES_UOI_TEXT + item.getUoi());
             countryCodeField.setValue(item.getCountryCode());
             levelField.setValue(item.getLevel().name());
             parentUOIField.setValue(Optional.ofNullable(item.getParentUOI()).orElse(""));
@@ -145,6 +155,14 @@ public class CreateView extends Div {
 
 
 
+    }
+
+    private void update() {
+        UOINode uoiNode = grid.getSelectedItems().iterator().next();
+        Map<String, String> properties = getProperties();
+        restClientService.updateProperties(uoiNode.getUoi(), properties);
+        uoiNode.setProperties(properties);
+        toCreateState();
     }
 
     private Map<String, String> getProperties() {
@@ -197,32 +215,44 @@ public class CreateView extends Div {
     }
 
     private void toUpdateState() {
-        propertiesLayoutVert.removeAll();
-        propertiesLayoutVert.add(propertiesLayoutTitleButtons, propertiesLayoutLabels);
-        createButton.setVisible(false);
+        clearUpdateFormFields();
+
+        //update form
+        propertiesLayout.setVisible(true);
         updateButton.setVisible(true);
         cancelButton.setVisible(true);
-        propertiesLayout.setVisible(true);
+
+        //create form
+        createButton.setVisible(false);
         countryCodeField.setEnabled(false);
         levelField.setEnabled(false);
     }
 
     private void toCreateState() {
-        clearFormLayoutFields();
+        clearCreateFormFields();
 
+        //create form
         createButton.setVisible(true);
-        updateButton.setVisible(false);
-        cancelButton.setVisible(false);
-        propertiesLayoutLabels.setVisible(false);
-        propertiesLayout.setVisible(false);
         countryCodeField.setEnabled(true);
         levelField.setEnabled(true);
+
+        //update form
+        updateButton.setVisible(false);
+        cancelButton.setVisible(false);
+        propertiesLayout.setVisible(false);
     }
 
-    private void clearFormLayoutFields() {
+    private void clearCreateFormFields() {
         countryCodeField.setValue("");
         levelField.setValue("");
         parentUOIField.setValue("");
+    }
+
+    private void clearUpdateFormFields() {
+        propertiesLayoutVert.removeAll();
+        propertiesLayoutVert.add(propertiesLayoutHeader, propertiesLayoutLabels);
+        propertiesLayoutLabels.setVisible(false);
+        propertiesUOIText.setText(PROPERTIES_UOI_TEXT);
     }
 
 }
