@@ -1,0 +1,6 @@
+uoi:
+    backend:
+        server:
+            host: https://uoi.recheck.io/
+vaadin:
+    productionMode: true

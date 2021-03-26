@@ -1,0 +1,11 @@
+spring:
+    profiles:
+        active: '@spring.profile@'
+
+server:
+    port: 8081
+
+logging:
+    level:
+        org:
+            atmosphere: warn
