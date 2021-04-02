@@ -5,8 +5,8 @@ import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H3;
-import io.recheck.ui.components.TextFieldMap;
 import io.recheck.ui.components.ComponentsData;
+import io.recheck.ui.components.TextFieldMap;
 import io.recheck.ui.components.uoi.model.PropertiesModel;
 import lombok.Data;
 

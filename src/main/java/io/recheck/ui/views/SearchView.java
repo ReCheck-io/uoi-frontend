@@ -17,7 +17,9 @@ import io.recheck.ui.rest.RestClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 @CssImport("./views/search/search-view.css")
 @Route(value = "search", layout = MainView.class)

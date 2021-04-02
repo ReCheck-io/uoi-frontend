@@ -4,7 +4,6 @@ import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.data.provider.ListDataProvider;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
@@ -18,6 +17,7 @@ import io.recheck.ui.entity.UOINode;
 import io.recheck.ui.rest.RestClientService;
 import io.recheck.ui.rest.dto.NewUoiDTO;
 import io.recheck.ui.rest.dto.UpdatePropertiesDTO;
+import io.recheck.ui.rest.dto.UpdateRelationshipDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -75,10 +75,10 @@ public class CreateView extends Div {
 
     private void initListeners() {
         uoiFormLayout.getComponents().createClickListener(e -> createClickListener());
-        uoiFormLayout.getComponents().updateClickListener(e -> updateClickListener());
+        uoiFormLayout.getComponents().updateClickListener(e -> updateParentUOIClickListener());
         uoiFormLayout.getComponents().cancelClickListener(e -> toCreateState());
 
-        propertiesLayout.getComponents().updateClickListener(e -> updateClickListener());
+        propertiesLayout.getComponents().updateClickListener(e -> updatePropertiesClickListener());
 
         uoiGrid.addItemClickListener((ClickListener<UOINode>) item -> toUpdateState(item));
     }
@@ -102,7 +102,19 @@ public class CreateView extends Div {
         toCreateState();
     }
 
-    private void updateClickListener() {
+    private void updateParentUOIClickListener() {
+        UOIFormModel uoiFormModel = uoiFormLayout.getComponents().getData();
+        PropertiesModel propertiesModel = propertiesLayout.getComponents().getData();
+        Optional<UOINode> uoiNode = uoiGrid.findItemByUoi(propertiesModel.getUoi());
+        if (uoiNode.isPresent()) {
+            UpdateRelationshipDTO updateRelationshipDTO = new UpdateRelationshipDTO(uoiNode.get(), uoiFormModel);
+            restClientService.makeRelationship(updateRelationshipDTO);
+            uoiNode.get().setParentUOI(uoiFormModel.getParentUOI());
+        }
+        toCreateState();
+    }
+
+    private void updatePropertiesClickListener() {
         PropertiesModel propertiesModel = propertiesLayout.getComponents().getData();
         propertiesModel.getProperties().forEach((key, value) -> {
             restClientService.updateProperties(new UpdatePropertiesDTO(propertiesModel.getUoi(), key, value));

@@ -7,6 +7,7 @@ import io.recheck.ui.components.uoi.model.SearchByUoiModel;
 import io.recheck.ui.entity.UOINode;
 import io.recheck.ui.rest.dto.NewUoiDTO;
 import io.recheck.ui.rest.dto.UpdatePropertiesDTO;
+import io.recheck.ui.rest.dto.UpdateRelationshipDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -45,6 +46,15 @@ public class RestClientService implements Serializable {
         UriComponentsBuilder builder = buildEndpoint("/node/properties");
         log.debug("Send PUT {} \n Body: {}", builder.toUriString(), entity);
         ResponseEntity<UOINode> responseEntity = restTemplate.exchange(builder.toUriString(), HttpMethod.PUT, entity, UOINode.class);
+        log.debug("Receive {}", responseEntity);
+        return responseEntity;
+    }
+
+    public ResponseEntity<String> makeRelationship(UpdateRelationshipDTO updateRelationshipDTO) {
+        HttpEntity entity = buildHttpEntityWithHeaders(updateRelationshipDTO);
+        UriComponentsBuilder builder = buildEndpoint("/node/relationship");
+        log.debug("Send PUT {} \n Body: {}", builder.toUriString(), entity);
+        ResponseEntity<String> responseEntity = restTemplate.exchange(builder.toUriString(), HttpMethod.PUT, entity, String.class);
         log.debug("Receive {}", responseEntity);
         return responseEntity;
     }
