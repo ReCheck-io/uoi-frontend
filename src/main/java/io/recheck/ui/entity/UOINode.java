@@ -16,24 +16,13 @@ public class UOINode {
 
     private String uoi;
     private Map<String, String> properties = new HashMap<>();
-    private String parentUOI = null;
+    private String parentUOI;
     private String countryCode;
     private LEVEL level;
     private String timestamp;
-    private String owner;
-    private String uoiClass;
 
     public UOINode(String uoi) {
         this.uoi = uoi;
-    }
-
-    public void addProperties(String key, String value) {
-        if (this.properties != null){
-            this.properties.put(key, value);
-        }else {
-            this.properties = new HashMap();
-            this.properties.put(key, value);
-        }
     }
 
     public String getPropertiesAsJson() {
@@ -48,6 +37,16 @@ public class UOINode {
         }
 
         return "";
+    }
+
+    public boolean equals(Object o){
+        if(o == null)
+            return false;
+        if(!(o instanceof UOINode))
+            return false;
+
+        UOINode other = (UOINode) o;
+        return this.uoi.equals(other.uoi);
     }
 
 

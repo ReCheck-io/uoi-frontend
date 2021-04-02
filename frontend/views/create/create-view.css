@@ -4,9 +4,9 @@
 
 .createResultLayout {
   padding: 30px;
-  width: 70%;
+  width: 69%;
 }
 
-.valueLabel {
-    margin-left: 180px;
+.propertiesLayout {
+    width: 29%;
 }
