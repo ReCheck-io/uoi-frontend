@@ -108,10 +108,9 @@ public class CreateView extends Div {
             restClientService.updateProperties(new UpdatePropertiesDTO(propertiesModel.getUoi(), key, value));
         });
 
-        ListDataProvider<UOINode> dataProvider = (ListDataProvider) uoiGrid.getDataProvider();
-        Optional<UOINode> first = dataProvider.getItems().stream().filter(node -> node.getUoi().equals(propertiesModel.getUoi())).findFirst();
-        if (first.isPresent()) {
-            first.get().setProperties(propertiesModel.getProperties());
+        Optional<UOINode> uoiNode = uoiGrid.findItemByUoi(propertiesModel.getUoi());
+        if (uoiNode.isPresent()) {
+            uoiNode.get().setProperties(propertiesModel.getProperties());
         }
 
         toCreateState();

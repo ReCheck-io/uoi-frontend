@@ -1,5 +1,6 @@
 package io.recheck.ui.components.uoi;
 
+import com.vaadin.flow.data.provider.ListDataProvider;
 import io.recheck.ui.components.ExtendedGrid;
 import io.recheck.ui.entity.UOINode;
 
@@ -29,5 +30,10 @@ public class UOIGrid extends ExtendedGrid<UOINode> {
     public void setVisibleColumn(COLUMN_KEYS key, boolean visible) {
         Optional.ofNullable(getColumnByKey(key.name())).ifPresent(cl -> cl.setVisible(visible));
         refreshUI();
+    }
+
+    public Optional<UOINode> findItemByUoi(String uoi) {
+        ListDataProvider<UOINode> dataProvider = (ListDataProvider) getDataProvider();
+        return dataProvider.getItems().stream().filter(node -> node.getUoi().equals(uoi)).findFirst();
     }
 }
