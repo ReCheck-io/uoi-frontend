@@ -3,9 +3,9 @@ package io.recheck.ui.rest;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.recheck.ui.entity.UOINode;
+import io.recheck.ui.rest.dto.NewUoiDTO;
 import io.recheck.ui.rest.dto.SearchByPropertiesDTO;
 import io.recheck.ui.rest.dto.SearchByUoiDTO;
-import io.recheck.ui.rest.dto.NewUoiDTO;
 import io.recheck.ui.rest.dto.UpdatePropertiesDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,7 +15,8 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.Collections;
+import java.util.Map;
 
 @Service
 @Slf4j

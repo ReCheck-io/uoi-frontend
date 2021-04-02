@@ -8,11 +8,7 @@ import com.vaadin.flow.component.textfield.TextField;
 import io.recheck.ui.components.uoi.model.ComponentsData;
 import io.recheck.ui.components.uoi.model.UOIFormModel;
 import io.recheck.ui.entity.LEVEL;
-import io.recheck.ui.entity.UOINode;
-import io.recheck.ui.rest.dto.NewUoiDTO;
 import lombok.Data;
-
-import java.util.Optional;
 
 
 @Data
