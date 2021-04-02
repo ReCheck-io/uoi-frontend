@@ -6,7 +6,7 @@ import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H3;
 import io.recheck.ui.components.TextFieldMap;
-import io.recheck.ui.components.uoi.model.ComponentsData;
+import io.recheck.ui.components.ComponentsData;
 import io.recheck.ui.components.uoi.model.PropertiesModel;
 import lombok.Data;
 
@@ -48,7 +48,7 @@ public class PropertiesComponents implements ComponentsData<PropertiesModel> {
         return data;
     }
 
-    public void removeData() {
+    public void clearData() {
         data = null;
         textFieldMap.removeAll();
     }

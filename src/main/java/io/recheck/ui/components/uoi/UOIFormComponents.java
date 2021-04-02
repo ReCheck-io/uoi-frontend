@@ -5,7 +5,7 @@ import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.textfield.TextField;
-import io.recheck.ui.components.uoi.model.ComponentsData;
+import io.recheck.ui.components.ComponentsData;
 import io.recheck.ui.components.uoi.model.UOIFormModel;
 import io.recheck.ui.entity.LEVEL;
 import lombok.Data;
@@ -39,7 +39,7 @@ public class UOIFormComponents implements ComponentsData<UOIFormModel> {
         parentUOIField.setValue(uoiFormModel.getParentUOI());
     }
 
-    public void removeData() {
+    public void clearData() {
         countryCodeField.setValue("");
         levelField.setValue(null);
         parentUOIField.setValue("");

@@ -36,16 +36,13 @@ public class CreateView extends Div {
     private RestClientService restClientService;
     private SessionService sessionService;
 
-    private UOIFormComponents uoiFormComponents = new UOIFormComponents();
-    private UOIFormLayout uoiFormLayout = new UOIFormLayout(uoiFormComponents);
+    private UOIFormLayout uoiFormLayout = new UOIFormLayout(new UOIFormComponents());
+    private PropertiesLayout propertiesLayout = new PropertiesLayout(new PropertiesComponents());
 
     private UOIGrid uoiGrid;
     private GridVerticalLayout gridLayout;
 
     private VerticalLayout createResultLayout = new VerticalLayout();
-
-    private PropertiesComponents propertiesComponents = new PropertiesComponents();
-    private PropertiesLayout propertiesLayout = new PropertiesLayout(propertiesComponents);
 
 
     public CreateView(@Autowired RestClientService restClientService, @Autowired SessionService sessionService) {
@@ -77,11 +74,11 @@ public class CreateView extends Div {
     }
 
     private void initListeners() {
-        uoiFormComponents.createClickListener(e -> createClickListener());
-        uoiFormComponents.updateClickListener(e -> updateClickListener());
-        uoiFormComponents.cancelClickListener(e -> toCreateState());
+        uoiFormLayout.getComponents().createClickListener(e -> createClickListener());
+        uoiFormLayout.getComponents().updateClickListener(e -> updateClickListener());
+        uoiFormLayout.getComponents().cancelClickListener(e -> toCreateState());
 
-        propertiesComponents.updateClickListener(e -> updateClickListener());
+        propertiesLayout.getComponents().updateClickListener(e -> updateClickListener());
 
         uoiGrid.addItemClickListener((ClickListener<UOINode>) item -> toUpdateState(item));
     }
@@ -97,7 +94,7 @@ public class CreateView extends Div {
     }
 
     private void createClickListener() {
-        NewUoiDTO newUoiDTO = new NewUoiDTO(uoiFormComponents.getData());
+        NewUoiDTO newUoiDTO = new NewUoiDTO(uoiFormLayout.getComponents().getData());
         if (StringUtils.hasText(newUoiDTO.getCountryCode()) || newUoiDTO.getLevel() != null) {
             ResponseEntity<UOINode> uoiNodeResponseEntity = restClientService.newUoi(newUoiDTO);
             uoiGrid.addItem(uoiNodeResponseEntity.getBody());
@@ -106,7 +103,7 @@ public class CreateView extends Div {
     }
 
     private void updateClickListener() {
-        PropertiesModel propertiesModel = propertiesComponents.getData();
+        PropertiesModel propertiesModel = propertiesLayout.getComponents().getData();
         propertiesModel.getProperties().forEach((key, value) -> {
             restClientService.updateProperties(new UpdatePropertiesDTO(propertiesModel.getUoi(), key, value));
         });
@@ -122,22 +119,22 @@ public class CreateView extends Div {
 
     private void toUpdateState(UOINode uoiNode) {
         uoiFormLayout.toUpdateState();
-        uoiFormComponents.setData(new UOIFormModel(uoiNode));
+        uoiFormLayout.getComponents().setData(new UOIFormModel(uoiNode));
 
         propertiesLayout.toUpdateState();
-        propertiesComponents.removeData();
-        propertiesComponents.setData(new PropertiesModel(uoiNode));
+        propertiesLayout.getComponents().clearData();
+        propertiesLayout.getComponents().setData(new PropertiesModel(uoiNode));
     }
 
     private void toCreateState() {
         uoiFormLayout.toCreateState();
-        uoiFormComponents.removeData();
+        uoiFormLayout.getComponents().clearData();
 
         uoiGrid.refreshUI();
         uoiGrid.deselectAll();
 
         propertiesLayout.toCreateState();
-        propertiesComponents.removeData();
+        propertiesLayout.getComponents().clearData();
     }
 
 }

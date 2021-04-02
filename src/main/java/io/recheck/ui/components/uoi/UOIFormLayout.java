@@ -3,27 +3,15 @@ package io.recheck.ui.components.uoi;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import io.recheck.ui.components.StatedLayout;
 
-public class UOIFormLayout extends Div {
+public class UOIFormLayout extends Div implements StatedLayout<UOIFormComponents> {
 
     private UOIFormComponents uoiFormComponents;
 
     public UOIFormLayout(UOIFormComponents uoiFormComponents) {
         this.uoiFormComponents = uoiFormComponents;
-
-        FormLayout formLayout = new FormLayout();
-        formLayout.add(uoiFormComponents.getCountryCodeField(),
-                uoiFormComponents.getLevelField(),
-                uoiFormComponents.getParentUOIField());
-        add(formLayout);
-
-        HorizontalLayout buttonsLayout = new HorizontalLayout();
-        buttonsLayout.add(uoiFormComponents.getCreateButton(),
-                uoiFormComponents.getUpdateButton(),
-                uoiFormComponents.getCancelButton());
-        add(buttonsLayout);
-
-        toCreateState();
+        initLayout(uoiFormComponents);
     }
 
     public void toCreateState() {
@@ -46,4 +34,25 @@ public class UOIFormLayout extends Div {
         uoiFormComponents.getLevelField().setEnabled(false);
     }
 
+    @Override
+    public UOIFormComponents getComponents() {
+        return uoiFormComponents;
+    }
+
+    @Override
+    public void initLayout(UOIFormComponents components) {
+        FormLayout formLayout = new FormLayout();
+        formLayout.add(uoiFormComponents.getCountryCodeField(),
+                uoiFormComponents.getLevelField(),
+                uoiFormComponents.getParentUOIField());
+        add(formLayout);
+
+        HorizontalLayout buttonsLayout = new HorizontalLayout();
+        buttonsLayout.add(uoiFormComponents.getCreateButton(),
+                uoiFormComponents.getUpdateButton(),
+                uoiFormComponents.getCancelButton());
+        add(buttonsLayout);
+
+        toCreateState();
+    }
 }
