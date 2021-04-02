@@ -1,11 +1,11 @@
-package io.recheck.ui.rest.dto;
+package io.recheck.ui.components.uoi.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class SearchByUoiDTO {
+public class SearchByUoiModel {
 
     private String uoi;
 

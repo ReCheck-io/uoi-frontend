@@ -2,10 +2,10 @@ package io.recheck.ui.rest;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.recheck.ui.components.uoi.model.SearchByPropertiesModel;
+import io.recheck.ui.components.uoi.model.SearchByUoiModel;
 import io.recheck.ui.entity.UOINode;
 import io.recheck.ui.rest.dto.NewUoiDTO;
-import io.recheck.ui.rest.dto.SearchByPropertiesDTO;
-import io.recheck.ui.rest.dto.SearchByUoiDTO;
 import io.recheck.ui.rest.dto.UpdatePropertiesDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -49,7 +49,7 @@ public class RestClientService implements Serializable {
         return responseEntity;
     }
 
-    public ResponseEntity<String> searchByUoi(SearchByUoiDTO searchByUoiDTO) {
+    public ResponseEntity<String> searchByUoi(SearchByUoiModel searchByUoiDTO) {
         HttpEntity entity = buildHttpEntityWithHeaders();
         UriComponentsBuilder builder = buildEndpointWithParams(searchByUoiDTO, "/search/uoi");
         log.debug("Send GET {}", builder.toUriString());
@@ -58,7 +58,7 @@ public class RestClientService implements Serializable {
         return responseEntity;
     }
 
-    public ResponseEntity<String> searchByProperties(SearchByPropertiesDTO searchByPropertiesDTO) {
+    public ResponseEntity<String> searchByProperties(SearchByPropertiesModel searchByPropertiesDTO) {
         HttpEntity entity = buildHttpEntityWithHeaders();
         UriComponentsBuilder builder = buildEndpointWithParams(searchByPropertiesDTO, "/search/properties");
         log.debug("Send GET {}", builder.toUriString());
