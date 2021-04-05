@@ -14,7 +14,6 @@ public class SearchByPropertiesComponents implements ComponentsData<SearchByProp
 
     private TextField keyTextField = new TextField();
     private TextField valueTextField = new TextField();
-    private Checkbox checkbox = new Checkbox("Show properties");
 
     private Button searchButton = new Button("Search");
 
@@ -25,7 +24,6 @@ public class SearchByPropertiesComponents implements ComponentsData<SearchByProp
     private void initComponents() {
         keyTextField.setPlaceholder("Key");
         valueTextField.setPlaceholder("Value");
-        checkbox.setValue(false);
     }
 
     public void searchClickListener(ComponentEventListener<ClickEvent<Button>> listener) {
@@ -34,7 +32,7 @@ public class SearchByPropertiesComponents implements ComponentsData<SearchByProp
 
     @Override
     public SearchByPropertiesModel getData() {
-        return new SearchByPropertiesModel(keyTextField.getValue(), valueTextField.getValue(), checkbox.getValue());
+        return new SearchByPropertiesModel(keyTextField.getValue(), valueTextField.getValue(), true);
     }
 
     @Override
@@ -46,6 +44,5 @@ public class SearchByPropertiesComponents implements ComponentsData<SearchByProp
     public void clearData() {
         keyTextField.setValue("");
         valueTextField.setValue("");
-        checkbox.setValue(false);
     }
 }

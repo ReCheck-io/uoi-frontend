@@ -22,7 +22,7 @@ public class SearchByPropertiesLayout extends VerticalLayout implements Layout<S
     @Override
     public void initLayout(SearchByPropertiesComponents components) {
         HorizontalLayout horizontalLayout = new HorizontalLayout();
-        horizontalLayout.add(components.getKeyTextField(), components.getValueTextField(), components.getCheckbox());
+        horizontalLayout.add(components.getKeyTextField(), components.getValueTextField());
         horizontalLayout.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
         add(horizontalLayout, components.getSearchButton());
     }

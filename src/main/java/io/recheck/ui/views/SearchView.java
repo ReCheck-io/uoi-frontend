@@ -82,10 +82,6 @@ public class SearchView extends Div {
             ResponseEntity<String> responseEntity = restClientService.searchByProperties(propertiesComponents.getData());
             List<UOINode> uoiNodes = getSearchByPropertiesResult(responseEntity);
             uoiGrid.setItems(uoiNodes);
-
-            uoiGrid.setVisibleColumn(UOIGrid.COLUMN_KEYS.CL_KEY_LEVEL, propertiesComponents.getCheckbox().getValue());
-            uoiGrid.setVisibleColumn(UOIGrid.COLUMN_KEYS.CL_KEY_PARENT, propertiesComponents.getCheckbox().getValue());
-            uoiGrid.setVisibleColumn(UOIGrid.COLUMN_KEYS.CL_KEY_PROPERTIES, propertiesComponents.getCheckbox().getValue());
         });
 
 

@@ -1,5 +1,6 @@
 package io.recheck.ui.components.uoi;
 
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.data.provider.ListDataProvider;
 import io.recheck.ui.components.ExtendedGrid;
 import io.recheck.ui.entity.UOINode;
@@ -11,7 +12,7 @@ import java.util.Optional;
 public class UOIGrid extends ExtendedGrid<UOINode> {
 
     public enum COLUMN_KEYS {
-        CL_KEY_UOI, CL_KEY_COUNTRY, CL_KEY_LEVEL, CL_KEY_PARENT, CL_KEY_PROPERTIES
+        CL_KEY_UOI, CL_KEY_COUNTRY, CL_KEY_LEVEL, CL_KEY_PARENT, CL_KEY_PROPERTIES, CL_KEY_VIEW
     }
 
     public UOIGrid(List<UOINode> dataProvider) {
@@ -24,7 +25,16 @@ public class UOIGrid extends ExtendedGrid<UOINode> {
         addColumn(UOINode::getCountryCode).setHeader("Country Code").setKey(COLUMN_KEYS.CL_KEY_COUNTRY.name()).setVisible(false);
         addColumn(UOINode::getLevel).setHeader("Level").setKey(COLUMN_KEYS.CL_KEY_LEVEL.name());
         addColumn(UOINode::getParentUOI).setHeader("Parent UOI").setKey(COLUMN_KEYS.CL_KEY_PARENT.name());
-        addColumn(UOINode::getPropertiesAsJson).setHeader("Properties as JSON").setKey(COLUMN_KEYS.CL_KEY_PROPERTIES.name());
+        addColumn(UOINode::getPropertiesAsJson).setHeader("Properties as JSON").setKey(COLUMN_KEYS.CL_KEY_PROPERTIES.name()).setVisible(false);
+
+        addComponentColumn(uoiNode -> {
+            Button viewButton = new Button("View Properties");
+            viewButton.addClickListener(e -> {
+                super.clickListener.onClick(uoiNode);
+            });
+            return viewButton;
+        }).setHeader("Properties").setKey(COLUMN_KEYS.CL_KEY_VIEW.name());
+
         getColumns().forEach(c -> c.setAutoWidth(true));
     }
 

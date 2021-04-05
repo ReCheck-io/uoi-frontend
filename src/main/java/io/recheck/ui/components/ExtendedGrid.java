@@ -7,6 +7,7 @@ import java.util.List;
 public class ExtendedGrid<T> extends Grid<T> {
 
     private List<T> dataProvider;
+    protected ClickListener<T> clickListener;
 
     public ExtendedGrid(List<T> dataProvider) {
         this.dataProvider = dataProvider;
@@ -15,6 +16,7 @@ public class ExtendedGrid<T> extends Grid<T> {
     }
 
     public void addItemClickListener(ClickListener<T> clickListener) {
+        this.clickListener = clickListener;
         super.addItemClickListener(event -> {
             T item = event.getItem();
             clickListener.onClick(item);
