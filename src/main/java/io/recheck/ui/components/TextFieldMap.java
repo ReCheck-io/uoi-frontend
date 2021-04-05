@@ -35,18 +35,19 @@ public class TextFieldMap extends VerticalLayout {
     public void putMapEntries(Map<String, String> textFieldsMap) {
         if (textFieldsMap != null && !textFieldsMap.isEmpty()) {
             for (Map.Entry<String,String> entry : textFieldsMap.entrySet()) {
-                put(entry.getKey(), entry.getValue());
+                put(entry.getKey(), entry.getValue(), false);
             }
         }
     }
 
     public void putEmpty() {
-        put(null, null);
+        put(null, null, true);
     }
 
-    private void put(String key, String value) {
+    private void put(String key, String value, boolean keyFieldEnabled) {
         TextField keyField = new TextField();
         keyField.setPlaceholder("key");
+        keyField.setEnabled(keyFieldEnabled);
         TextField valueField = new TextField();
         valueField.setPlaceholder("value");
 
