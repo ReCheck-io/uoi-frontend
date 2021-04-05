@@ -1,8 +1,6 @@
 package io.recheck.ui.rest.dto;
 
-import io.recheck.ui.components.uoi.model.UOIFormModel;
 import io.recheck.ui.entity.RELATIONSHIP;
-import io.recheck.ui.entity.UOINode;
 import lombok.Data;
 
 @Data
@@ -12,8 +10,8 @@ public class UpdateRelationshipDTO {
     String childNode;
     String parentNode;
 
-    public UpdateRelationshipDTO(UOINode uoiNode, UOIFormModel uoiFormModel) {
-        this.childNode = uoiNode.getUoi();
-        this.parentNode = uoiFormModel.getParentUOI();
+    public UpdateRelationshipDTO(String uoi, String parentUoi) {
+        this.childNode = uoi;
+        this.parentNode = parentUoi;
     }
 }

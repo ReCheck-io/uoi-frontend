@@ -5,6 +5,7 @@ import io.recheck.ui.components.ExtendedGrid;
 import io.recheck.ui.entity.UOINode;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class UOIGrid extends ExtendedGrid<UOINode> {
@@ -32,7 +33,23 @@ public class UOIGrid extends ExtendedGrid<UOINode> {
         refreshUI();
     }
 
-    public Optional<UOINode> findItemByUoi(String uoi) {
+    public void setProperties(String uoi, Map<String, String> properties) {
+        Optional<UOINode> uoiNode = findItemByUoi(uoi);
+        if (uoiNode.isPresent()) {
+            uoiNode.get().setProperties(properties);
+        }
+        refreshUI();
+    }
+
+    public void setParentUoi(String uoi, String parentUoi) {
+        Optional<UOINode> uoiNode = findItemByUoi(uoi);
+        if (uoiNode.isPresent()) {
+            uoiNode.get().setParentUOI(parentUoi);
+        }
+        refreshUI();
+    }
+
+    private Optional<UOINode> findItemByUoi(String uoi) {
         ListDataProvider<UOINode> dataProvider = (ListDataProvider) getDataProvider();
         return dataProvider.getItems().stream().filter(node -> node.getUoi().equals(uoi)).findFirst();
     }

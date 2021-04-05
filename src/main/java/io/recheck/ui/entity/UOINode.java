@@ -21,6 +21,7 @@ public class UOINode {
     private String countryCode;
     private LEVEL level;
     private String timestamp;
+    private String uoiClass;
 
     public UOINode(String uoi) {
         this.uoi = uoi;

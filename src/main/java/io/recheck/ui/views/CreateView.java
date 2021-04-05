@@ -105,12 +105,12 @@ public class CreateView extends Div {
     private void updateParentUOIClickListener() {
         UOIFormModel uoiFormModel = uoiFormLayout.getComponents().getData();
         PropertiesModel propertiesModel = propertiesLayout.getComponents().getData();
-        Optional<UOINode> uoiNode = uoiGrid.findItemByUoi(propertiesModel.getUoi());
-        if (uoiNode.isPresent()) {
-            UpdateRelationshipDTO updateRelationshipDTO = new UpdateRelationshipDTO(uoiNode.get(), uoiFormModel);
-            restClientService.makeRelationship(updateRelationshipDTO);
-            uoiNode.get().setParentUOI(uoiFormModel.getParentUOI());
-        }
+
+        UpdateRelationshipDTO updateRelationshipDTO = new UpdateRelationshipDTO(propertiesModel.getUoi(), uoiFormModel.getParentUOI());
+        restClientService.makeRelationship(updateRelationshipDTO);
+
+        uoiGrid.setParentUoi(updateRelationshipDTO.getChildNode(), updateRelationshipDTO.getParentNode());
+
         toCreateState();
     }
 
@@ -120,10 +120,7 @@ public class CreateView extends Div {
             restClientService.updateProperties(new UpdatePropertiesDTO(propertiesModel.getUoi(), key, value));
         });
 
-        Optional<UOINode> uoiNode = uoiGrid.findItemByUoi(propertiesModel.getUoi());
-        if (uoiNode.isPresent()) {
-            uoiNode.get().setProperties(propertiesModel.getProperties());
-        }
+        uoiGrid.setProperties(propertiesModel.getUoi(), propertiesModel.getProperties());
 
         toCreateState();
     }
@@ -141,7 +138,6 @@ public class CreateView extends Div {
         uoiFormLayout.toCreateState();
         uoiFormLayout.getComponents().clearData();
 
-        uoiGrid.refreshUI();
         uoiGrid.deselectAll();
 
         propertiesLayout.toCreateState();

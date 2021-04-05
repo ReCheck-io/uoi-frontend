@@ -4,5 +4,9 @@
 
 .searchLayout {
   padding: 30px;
-  width: 70%;
+  width: 69%;
+}
+
+.propertiesLayout {
+    width: 29%;
 }
