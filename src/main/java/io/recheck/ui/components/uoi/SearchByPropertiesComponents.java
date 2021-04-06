@@ -3,7 +3,6 @@ package io.recheck.ui.components.uoi;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.textfield.TextField;
 import io.recheck.ui.components.ComponentsData;
 import io.recheck.ui.components.uoi.model.SearchByPropertiesModel;

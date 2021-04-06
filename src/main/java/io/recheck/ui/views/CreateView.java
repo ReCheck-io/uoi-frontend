@@ -23,8 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 
-import java.util.Optional;
-
 
 @CssImport("./views/create/create-view.css")
 @Route(value = "create", layout = MainView.class)

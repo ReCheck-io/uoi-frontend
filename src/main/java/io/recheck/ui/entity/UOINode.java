@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,6 +23,7 @@ public class UOINode {
     private LEVEL level;
     private String timestamp;
     private String uoiClass;
+    private ArrayList children = new ArrayList();
 
     public UOINode(String uoi) {
         this.uoi = uoi;
