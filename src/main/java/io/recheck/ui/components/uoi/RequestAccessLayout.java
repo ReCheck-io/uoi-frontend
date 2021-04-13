@@ -4,26 +4,15 @@ import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import io.recheck.ui.components.StatedLayout;
+import io.recheck.ui.components.Layout;
 
-public class RequestAccessLayout extends Dialog implements StatedLayout<RequestAccessComponents> {
+public class RequestAccessLayout extends Dialog implements Layout<RequestAccessComponents> {
 
     private RequestAccessComponents requestAccessComponents;
 
     public RequestAccessLayout(RequestAccessComponents requestAccessComponents) {
         this.requestAccessComponents = requestAccessComponents;
         initLayout(requestAccessComponents);
-    }
-
-
-    @Override
-    public void toCreateState() {
-
-    }
-
-    @Override
-    public void toUpdateState() {
-
     }
 
     @Override
