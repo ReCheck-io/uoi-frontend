@@ -1,6 +1,7 @@
 package io.recheck.ui.components;
 
 import com.vaadin.flow.component.tabs.Tab;
+import io.recheck.ui.components.baseStructure.Layout;
 import lombok.Data;
 
 @Data

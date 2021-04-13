@@ -3,7 +3,7 @@ package io.recheck.ui.components.uoi;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import io.recheck.ui.components.StatedLayout;
+import io.recheck.ui.components.baseStructure.StatedLayout;
 
 public class UOIFormLayout extends Div implements StatedLayout<UOIFormComponents> {
 

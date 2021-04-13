@@ -1,4 +1,4 @@
-package io.recheck.ui.components;
+package io.recheck.ui.components.baseStructure;
 
 public interface Layout<T extends ComponentsData> {
 

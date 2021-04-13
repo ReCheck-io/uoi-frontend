@@ -1,6 +1,7 @@
 package io.recheck.ui.components;
 
 import com.vaadin.flow.component.grid.Grid;
+import io.recheck.ui.components.baseStructure.ClickListener;
 
 import java.util.List;
 

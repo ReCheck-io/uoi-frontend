@@ -4,7 +4,7 @@ import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import io.recheck.ui.components.Layout;
+import io.recheck.ui.components.baseStructure.Layout;
 
 public class RequestAccessLayout extends Dialog implements Layout<RequestAccessComponents> {
 

@@ -5,7 +5,7 @@ import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
-import io.recheck.ui.components.ComponentsData;
+import io.recheck.ui.components.baseStructure.ComponentsData;
 import io.recheck.ui.components.uoi.model.RequestAccessModel;
 import lombok.Data;
 

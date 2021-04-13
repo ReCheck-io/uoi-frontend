@@ -8,7 +8,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import io.recheck.ui.SessionService;
-import io.recheck.ui.components.ClickListener;
+import io.recheck.ui.components.baseStructure.ClickListener;
 import io.recheck.ui.components.ComponentMapEntryStrategyTextFields;
 import io.recheck.ui.components.GridVerticalLayout;
 import io.recheck.ui.components.uoi.*;

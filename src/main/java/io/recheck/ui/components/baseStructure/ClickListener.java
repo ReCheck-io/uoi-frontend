@@ -1,4 +1,4 @@
-package io.recheck.ui.components;
+package io.recheck.ui.components.baseStructure;
 
 
 import java.io.Serializable;

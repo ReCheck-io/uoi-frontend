@@ -1,7 +1,7 @@
 package io.recheck.ui.components.uoi;
 
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import io.recheck.ui.components.Layout;
+import io.recheck.ui.components.baseStructure.Layout;
 
 public class SearchByUoiLayout extends VerticalLayout implements Layout<SearchByUoiComponents> {
 

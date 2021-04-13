@@ -10,6 +10,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import io.recheck.ui.components.*;
+import io.recheck.ui.components.baseStructure.ClickListener;
 import io.recheck.ui.components.uoi.*;
 import io.recheck.ui.components.uoi.model.PropertiesModel;
 import io.recheck.ui.entity.UOINode;

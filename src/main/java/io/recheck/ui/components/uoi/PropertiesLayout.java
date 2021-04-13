@@ -2,7 +2,7 @@ package io.recheck.ui.components.uoi;
 
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import io.recheck.ui.components.StatedLayout;
+import io.recheck.ui.components.baseStructure.StatedLayout;
 
 public class PropertiesLayout extends VerticalLayout implements StatedLayout<PropertiesComponents> {
 

@@ -3,7 +3,7 @@ package io.recheck.ui.components.uoi;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import io.recheck.ui.components.Layout;
+import io.recheck.ui.components.baseStructure.Layout;
 
 public class SearchByPropertiesLayout extends VerticalLayout implements Layout<SearchByPropertiesComponents> {
 

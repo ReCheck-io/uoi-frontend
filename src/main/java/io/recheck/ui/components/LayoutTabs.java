@@ -2,6 +2,7 @@ package io.recheck.ui.components;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.tabs.Tabs;
+import io.recheck.ui.components.baseStructure.Layout;
 
 import java.util.Arrays;
 

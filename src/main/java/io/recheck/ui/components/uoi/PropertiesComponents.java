@@ -8,6 +8,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.textfield.TextField;
 import io.recheck.ui.components.*;
+import io.recheck.ui.components.baseStructure.ComponentsData;
 import io.recheck.ui.components.uoi.model.RequestAccessModel;
 import io.recheck.ui.components.uoi.model.PropertiesModel;
 import lombok.Data;
