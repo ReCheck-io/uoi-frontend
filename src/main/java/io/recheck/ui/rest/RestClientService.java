@@ -6,6 +6,7 @@ import io.recheck.ui.components.uoi.model.SearchByPropertiesModel;
 import io.recheck.ui.components.uoi.model.SearchByUoiModel;
 import io.recheck.ui.entity.UOINode;
 import io.recheck.ui.rest.dto.NewUoiDTO;
+import io.recheck.ui.rest.dto.RequestAccessDTO;
 import io.recheck.ui.rest.dto.UpdatePropertiesDTO;
 import io.recheck.ui.rest.dto.UpdateRelationshipDTO;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +31,15 @@ public class RestClientService implements Serializable {
 
     public RestClientService() {
         restTemplate = new RestTemplate();
+    }
+
+    public ResponseEntity<String> requestAccess(RequestAccessDTO requestAccessDTO) {
+        HttpEntity entity = buildHttpEntityWithHeaders(requestAccessDTO);
+        UriComponentsBuilder builder = buildEndpoint("/uoi");
+        log.debug("Send PUT {} \n Body: {}", builder.toUriString(), entity);
+        ResponseEntity<String> responseEntity = restTemplate.exchange(builder.toUriString(), HttpMethod.POST, entity, String.class);
+        log.debug("Receive {}", responseEntity);
+        return responseEntity;
     }
 
     public ResponseEntity<UOINode> newUoi(NewUoiDTO newUoiDTO) {

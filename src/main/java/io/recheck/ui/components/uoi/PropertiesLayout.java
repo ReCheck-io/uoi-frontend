@@ -33,7 +33,7 @@ public class PropertiesLayout extends VerticalLayout implements StatedLayout<Pro
         VerticalLayout propertiesLayoutHeader = new VerticalLayout();
         propertiesLayoutHeader.add(propertiesComponents.getTitle(), propertiesComponents.getSubTitle(), propertiesLayoutButtons);
 
-        add(propertiesLayoutHeader, propertiesComponents.getTextFieldMap());
+        add(propertiesLayoutHeader, propertiesComponents.getComponentMapLayout());
 
         toCreateState();
     }

@@ -9,6 +9,7 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import io.recheck.ui.SessionService;
 import io.recheck.ui.components.ClickListener;
+import io.recheck.ui.components.ComponentMapEntryStrategyTextFields;
 import io.recheck.ui.components.GridVerticalLayout;
 import io.recheck.ui.components.uoi.*;
 import io.recheck.ui.components.uoi.model.PropertiesModel;
@@ -35,7 +36,7 @@ public class CreateView extends Div {
     private SessionService sessionService;
 
     private UOIFormLayout uoiFormLayout = new UOIFormLayout(new UOIFormComponents());
-    private PropertiesLayout propertiesLayout = new PropertiesLayout(new PropertiesComponents());
+    private PropertiesLayout propertiesLayout = new PropertiesLayout(new PropertiesComponents(new ComponentMapEntryStrategyTextFields()));
 
     private UOIGrid uoiGrid;
     private GridVerticalLayout gridLayout;
@@ -48,8 +49,8 @@ public class CreateView extends Div {
         this.sessionService = sessionService;
 
         initComponents();
-        initListeners();
         initLayout();
+        initListeners();
     }
 
     private void initLayout() {

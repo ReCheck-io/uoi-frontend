@@ -9,10 +9,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import io.recheck.ui.components.ClickListener;
-import io.recheck.ui.components.GridVerticalLayout;
-import io.recheck.ui.components.LayoutTab;
-import io.recheck.ui.components.LayoutTabs;
+import io.recheck.ui.components.*;
 import io.recheck.ui.components.uoi.*;
 import io.recheck.ui.components.uoi.model.PropertiesModel;
 import io.recheck.ui.entity.UOINode;
@@ -37,7 +34,7 @@ public class SearchView extends Div {
 
     private SearchByUoiLayout searchByUoiLayout = new SearchByUoiLayout(new SearchByUoiComponents());
     private SearchByPropertiesLayout searchByPropertiesLayout = new SearchByPropertiesLayout(new SearchByPropertiesComponents());
-    private PropertiesLayout propertiesLayout = new PropertiesLayout(new PropertiesComponents());
+    private PropertiesLayout propertiesLayout = new PropertiesLayout(new PropertiesComponents(new ComponentMapEntryStrategyValueButton()));
 
     LayoutTab tab1 = new LayoutTab(searchByUoiLayout,"Search By UOI");
     LayoutTab tab2 = new LayoutTab(searchByPropertiesLayout,"Search By Properties");
