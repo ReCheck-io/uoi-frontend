@@ -17,6 +17,7 @@ import io.recheck.ui.entity.UOINode;
 import io.recheck.ui.rest.RestClientService;
 import io.recheck.ui.rest.dto.UpdatePropertiesDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Arrays;
@@ -114,7 +115,8 @@ public class SearchView extends Div {
 
     private List<UOINode> getSearchByUOIResult(ResponseEntity<String> responseEntity) {
         String responseBody = responseEntity.getBody();
-        if (responseBody.equals("The node does not exist.")) {
+        HttpStatus statusCode = responseEntity.getStatusCode();
+        if (statusCode.value() == 404) {
             return Collections.emptyList();
         }
         else {

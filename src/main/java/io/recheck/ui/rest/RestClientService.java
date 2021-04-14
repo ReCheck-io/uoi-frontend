@@ -13,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -73,9 +75,14 @@ public class RestClientService implements Serializable {
         HttpEntity entity = buildHttpEntityWithHeaders();
         UriComponentsBuilder builder = buildEndpointWithParams(searchByUoiDTO, "/search/uoi");
         log.debug("Send GET {}", builder.toUriString());
-        ResponseEntity<String> responseEntity = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, entity, String.class);
-        log.debug("Receive {}", responseEntity);
-        return responseEntity;
+        try {
+            ResponseEntity<String> responseEntity = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, entity, String.class);
+            log.debug("Receive {}", responseEntity);
+            return responseEntity;
+        } catch (HttpClientErrorException ex) {
+            ResponseEntity<String> responseEntity = new ResponseEntity(ex.getStatusCode());
+            return responseEntity;
+        }
     }
 
     public ResponseEntity<String> searchByProperties(SearchByPropertiesModel searchByPropertiesDTO) {

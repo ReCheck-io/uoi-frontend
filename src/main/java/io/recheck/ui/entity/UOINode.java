@@ -23,6 +23,7 @@ public class UOINode {
     private LEVEL level;
     private String timestamp;
     private String uoiClass;
+    private String owner;
     private ArrayList children = new ArrayList();
 
     public UOINode(String uoi) {
