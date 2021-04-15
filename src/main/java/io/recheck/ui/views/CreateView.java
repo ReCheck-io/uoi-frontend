@@ -9,8 +9,9 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import io.recheck.ui.SessionService;
 import io.recheck.ui.components.baseStructure.ClickListener;
-import io.recheck.ui.components.ComponentMapEntryStrategyTextFields;
 import io.recheck.ui.components.GridVerticalLayout;
+import io.recheck.ui.components.map.ComponentMap;
+import io.recheck.ui.components.map.entryConverter.ConverterKeyValueTextField;
 import io.recheck.ui.components.uoi.*;
 import io.recheck.ui.components.uoi.model.PropertiesModel;
 import io.recheck.ui.components.uoi.model.UOIFormModel;
@@ -36,7 +37,7 @@ public class CreateView extends Div {
     private SessionService sessionService;
 
     private UOIFormLayout uoiFormLayout = new UOIFormLayout(new UOIFormComponents());
-    private PropertiesLayout propertiesLayout = new PropertiesLayout(new PropertiesComponents(new ComponentMapEntryStrategyTextFields()));
+    private PropertiesLayout propertiesLayout = new PropertiesLayout(new PropertiesComponents(ComponentMap.getForCreateView()));
 
     private UOIGrid uoiGrid;
     private GridVerticalLayout gridLayout;
@@ -131,6 +132,7 @@ public class CreateView extends Div {
         propertiesLayout.toUpdateState();
         propertiesLayout.getComponents().clearData();
         propertiesLayout.getComponents().setData(new PropertiesModel(uoiNode));
+        propertiesLayout.getComponents().getComponentMapLayout().initLayout(propertiesLayout.getComponents().getComponentMapLayout().getComponents());
     }
 
     private void toCreateState() {

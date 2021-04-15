@@ -1,16 +1,17 @@
-package io.recheck.ui.components;
+package io.recheck.ui.components.map.entryConverter;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.textfield.TextField;
+import io.recheck.ui.components.ExtendedButton;
 import io.recheck.ui.components.uoi.RequestAccessComponents;
 import io.recheck.ui.components.uoi.RequestAccessLayout;
+import io.recheck.ui.components.uoi.model.PropertiesModel;
 import io.recheck.ui.components.uoi.model.RequestAccessModel;
 import org.springframework.util.StringUtils;
 
-public class ComponentMapEntryStrategyValueButton extends ComponentMapEntryStrategyTextFields {
+public class ConverterSearchView extends ConverterKeyTextField<PropertiesModel, Component, String> {
 
-    @Override
-    public Component newValueComponent(String value) {
+    public Component toValueComponent(PropertiesModel data, String value) {
         Component valueField = new TextField();
         ((TextField) valueField).setPlaceholder("value");
 
@@ -21,7 +22,7 @@ public class ComponentMapEntryStrategyValueButton extends ComponentMapEntryStrat
                 extendedButton.getBtnCustomProperties().put("href", value);
                 extendedButton.addClickListener(e -> {
                     RequestAccessComponents requestAccessComponents = new RequestAccessComponents();
-                    requestAccessComponents.setData(new RequestAccessModel("", "", "", value));
+                    requestAccessComponents.setData(new RequestAccessModel("", "", data.getUoi(), value));
                     RequestAccessLayout requestAccessLayout = new RequestAccessLayout(requestAccessComponents);
                     requestAccessLayout.open();
 
@@ -41,8 +42,13 @@ public class ComponentMapEntryStrategyValueButton extends ComponentMapEntryStrat
         return valueField;
     }
 
-    @Override
-    public String getValueText(Component value) {
+    public Component createEmptyValueComponent() {
+        TextField valueField = new TextField();
+        valueField.setPlaceholder("value");
+        return valueField;
+    }
+
+    public String toValueData(Component value) {
         String valueText = "";
         if (value instanceof TextField) {
             valueText = ((TextField) value).getValue();
@@ -51,6 +57,10 @@ public class ComponentMapEntryStrategyValueButton extends ComponentMapEntryStrat
             valueText = ((ExtendedButton) value).getBtnCustomProperties().get("href");
         }
         return valueText;
+    }
+
+    public boolean valueDataIsNotEmpty(String valueData) {
+        return StringUtils.hasText(valueData);
     }
 
 }

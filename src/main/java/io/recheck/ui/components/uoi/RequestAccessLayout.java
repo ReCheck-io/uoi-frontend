@@ -27,7 +27,8 @@ public class RequestAccessLayout extends Dialog implements Layout<RequestAccessC
 
         add(new VerticalLayout(
                 new Label("Please login to  access :"),
-                new Label(components.getData().getUoi() + " on"),
+                new Label(components.getData().getUoi()),
+                new Label("on"),
                 new Label(components.getData().getUrl())));
 
         add(new VerticalLayout(components.getUserNameField(), components.getPasswordField()),

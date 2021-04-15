@@ -3,22 +3,30 @@ package io.recheck.ui.views;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import io.recheck.ui.components.*;
 import io.recheck.ui.components.baseStructure.ClickListener;
+import io.recheck.ui.components.map.ComponentMap;
+import io.recheck.ui.components.map.MapModel;
+import io.recheck.ui.components.map.entryConverter.ConverterKeyTextField;
+import io.recheck.ui.components.map.entryConverter.ConverterKeyValueTextField;
 import io.recheck.ui.components.uoi.*;
 import io.recheck.ui.components.uoi.model.PropertiesModel;
+import io.recheck.ui.components.uoi.model.RequestAccessModel;
 import io.recheck.ui.entity.UOINode;
 import io.recheck.ui.rest.RestClientService;
 import io.recheck.ui.rest.dto.UpdatePropertiesDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -36,7 +44,7 @@ public class SearchView extends Div {
 
     private SearchByUoiLayout searchByUoiLayout = new SearchByUoiLayout(new SearchByUoiComponents());
     private SearchByPropertiesLayout searchByPropertiesLayout = new SearchByPropertiesLayout(new SearchByPropertiesComponents());
-    private PropertiesLayout propertiesLayout = new PropertiesLayout(new PropertiesComponents(new ComponentMapEntryStrategyValueButton()));
+    private PropertiesLayout propLayout = new PropertiesLayout(new PropertiesComponents(ComponentMap.getForSearchView()));
 
     LayoutTab tab1 = new LayoutTab(searchByUoiLayout,"Search By UOI");
     LayoutTab tab2 = new LayoutTab(searchByPropertiesLayout,"Search By Properties");
@@ -56,7 +64,7 @@ public class SearchView extends Div {
         searchLayout.add(tabs, new Div(searchByUoiLayout, searchByPropertiesLayout), gridLayout);
 
         HorizontalLayout mainCreateLayout = new HorizontalLayout();
-        mainCreateLayout.add(searchLayout, propertiesLayout);
+        mainCreateLayout.add(searchLayout, propLayout);
         add(mainCreateLayout);
 
 
@@ -76,30 +84,32 @@ public class SearchView extends Div {
             uoiGrid.setItems(uoiNodes);
         });
 
-        SearchByPropertiesComponents propertiesComponents = searchByPropertiesLayout.getComponents();
-        propertiesComponents.searchClickListener(event -> {
-            ResponseEntity<String> responseEntity = restClientService.searchByProperties(propertiesComponents.getData());
+        SearchByPropertiesComponents sbpComponents = searchByPropertiesLayout.getComponents();
+        sbpComponents.searchClickListener(event -> {
+            ResponseEntity<String> responseEntity = restClientService.searchByProperties(sbpComponents.getData());
             List<UOINode> uoiNodes = getSearchByPropertiesResult(responseEntity);
             uoiGrid.setItems(uoiNodes);
         });
 
 
+        PropertiesComponents propComponents = propLayout.getComponents();
         uoiGrid.addItemClickListener((ClickListener<UOINode>) uoiNode -> {
-            propertiesLayout.toUpdateState();
-            propertiesLayout.getComponents().clearData();
-            propertiesLayout.getComponents().setData(new PropertiesModel(uoiNode));
+            propLayout.toUpdateState();
+            propComponents.clearData();
+            propComponents.setData(new PropertiesModel(uoiNode));
+            propComponents.getComponentMapLayout().initLayout(propComponents.getComponentMapLayout().getComponents());
         });
 
-        propertiesLayout.getComponents().updateClickListener(e -> {
-            PropertiesModel propertiesModel = propertiesLayout.getComponents().getData();
+        propComponents.updateClickListener(e -> {
+            PropertiesModel propertiesModel = propComponents.getData();
             propertiesModel.getProperties().forEach((key, value) -> {
                 restClientService.updateProperties(new UpdatePropertiesDTO(propertiesModel.getUoi(), key, value));
             });
 
             uoiGrid.setProperties(propertiesModel.getUoi(), propertiesModel.getProperties());
 
-            propertiesLayout.toCreateState();
-            propertiesLayout.getComponents().clearData();
+            propLayout.toCreateState();
+            propComponents.clearData();
         });
     }
 
@@ -109,8 +119,8 @@ public class SearchView extends Div {
         searchLayout.getStyle().clear();
         searchLayout.addClassName("searchLayout");
 
-        propertiesLayout.getStyle().clear();
-        propertiesLayout.addClassName("propertiesLayout");
+        propLayout.getStyle().clear();
+        propLayout.addClassName("propertiesLayout");
     }
 
     private List<UOINode> getSearchByUOIResult(ResponseEntity<String> responseEntity) {
