@@ -1,6 +1,12 @@
 package io.recheck.ui.components.uoi;
 
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.Scroller;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.provider.ListDataProvider;
 import io.recheck.ui.components.ExtendedGrid;
 import io.recheck.ui.entity.UOINode;
@@ -12,7 +18,7 @@ import java.util.Optional;
 public class UOIGrid extends ExtendedGrid<UOINode> {
 
     public enum COLUMN_KEYS {
-        CL_KEY_UOI, CL_KEY_COUNTRY, CL_KEY_LEVEL, CL_KEY_PARENT, CL_KEY_PROPERTIES, CL_KEY_VIEW
+        CL_KEY_UOI, CL_KEY_COUNTRY, CL_KEY_LEVEL, CL_KEY_PARENT, CL_KEY_PROPERTIES, CL_KEY_VIEW_PROP, CL_KEY_VIEW_CHLD
     }
 
     public UOIGrid(List<UOINode> dataProvider) {
@@ -30,10 +36,43 @@ public class UOIGrid extends ExtendedGrid<UOINode> {
         addComponentColumn(uoiNode -> {
             Button viewButton = new Button("View Properties");
             viewButton.addClickListener(e -> {
-                super.clickListener.onClick(uoiNode);
+                super.itemClickListener.onClick(uoiNode);
             });
             return viewButton;
-        }).setHeader("Properties").setKey(COLUMN_KEYS.CL_KEY_VIEW.name());
+        }).setHeader("Properties").setKey(COLUMN_KEYS.CL_KEY_VIEW_PROP.name());
+
+        addComponentColumn(uoiNode -> {
+            Button viewButton = new Button("View Children");
+            viewButton.addClickListener(view_btn_event -> {
+                Dialog viewChildrenDialog = new Dialog();
+                viewChildrenDialog.setCloseOnEsc(true);
+                viewChildrenDialog.setCloseOnOutsideClick(true);
+
+                Button closeButton = new Button("Close", close_btn_event -> viewChildrenDialog.close());
+                HorizontalLayout buttonLayout = new HorizontalLayout();
+                buttonLayout.setWidth("100%");
+                buttonLayout.setJustifyContentMode(FlexComponent.JustifyContentMode.AROUND);
+                buttonLayout.add(closeButton);
+
+                VerticalLayout verticalLayout = new VerticalLayout();
+                for (String s: uoiNode.getChildren()) {
+                    verticalLayout.add(new Label(s));
+                }
+
+                Scroller scroller = new Scroller(verticalLayout);
+                scroller.setHeight("80%");
+
+                viewChildrenDialog.add(new Label("Child nodes:"), scroller, buttonLayout);
+                viewChildrenDialog.setResizable(true);
+                viewChildrenDialog.setWidth("30%");
+                viewChildrenDialog.setHeight("50%");
+                viewChildrenDialog.open();
+
+            });
+
+            viewButton.setVisible(!uoiNode.getChildren().isEmpty());
+            return viewButton;
+        }).setHeader("Children").setKey(COLUMN_KEYS.CL_KEY_VIEW_CHLD.name());
 
         getColumns().forEach(c -> c.setAutoWidth(true));
     }

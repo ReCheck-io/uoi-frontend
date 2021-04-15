@@ -94,6 +94,15 @@ public class RestClientService implements Serializable {
         return responseEntity;
     }
 
+    public ResponseEntity<String> getChildren(SearchByPropertiesModel searchByPropertiesDTO) {
+        HttpEntity entity = buildHttpEntityWithHeaders();
+        UriComponentsBuilder builder = buildEndpointWithParams(searchByPropertiesDTO, "/search/properties");
+        log.debug("Send GET {}", builder.toUriString());
+        ResponseEntity<String> responseEntity = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, entity, String.class);
+        log.debug("Receive {}", responseEntity);
+        return responseEntity;
+    }
+
 
     //==========================================================
     //             UTIL METHODS

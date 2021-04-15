@@ -24,7 +24,7 @@ public class UOINode {
     private String timestamp;
     private String uoiClass;
     private String owner;
-    private ArrayList children = new ArrayList();
+    private ArrayList<String> children = new ArrayList();
 
     public UOINode(String uoi) {
         this.uoi = uoi;
