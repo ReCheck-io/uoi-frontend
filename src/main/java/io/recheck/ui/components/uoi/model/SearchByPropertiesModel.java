@@ -1,14 +1,17 @@
 package io.recheck.ui.components.uoi.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-@AllArgsConstructor
 public class SearchByPropertiesModel {
 
     private String key;
     private String value;
     private Boolean withMetaData;
 
+    public SearchByPropertiesModel(String key, String value, Boolean withMetaData) {
+        this.key = key.trim();
+        this.value = value.trim();
+        this.withMetaData = withMetaData;
+    }
 }

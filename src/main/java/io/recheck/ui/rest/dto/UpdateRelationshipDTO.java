@@ -11,7 +11,7 @@ public class UpdateRelationshipDTO {
     String parentNode;
 
     public UpdateRelationshipDTO(String uoi, String parentUoi) {
-        this.childNode = uoi;
-        this.parentNode = parentUoi;
+        this.childNode = uoi.trim();
+        this.parentNode = parentUoi.trim();
     }
 }

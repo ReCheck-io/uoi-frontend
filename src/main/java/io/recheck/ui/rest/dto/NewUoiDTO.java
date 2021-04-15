@@ -4,7 +4,6 @@ import io.recheck.ui.components.uoi.model.UOIFormModel;
 import io.recheck.ui.entity.LEVEL;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.beans.BeanUtils;
 
 @Data
 @AllArgsConstructor
@@ -15,7 +14,9 @@ public class NewUoiDTO {
     private String parentUOI;
 
     public NewUoiDTO(UOIFormModel uoiFormModel) {
-        BeanUtils.copyProperties(uoiFormModel, this);
+        this.countryCode = uoiFormModel.getCountryCode().trim();
+        this.level = uoiFormModel.getLevel();
+        this.parentUOI = uoiFormModel.getParentUOI().trim();
     }
 
 }

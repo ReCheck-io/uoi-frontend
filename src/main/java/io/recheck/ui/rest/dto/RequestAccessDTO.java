@@ -1,14 +1,17 @@
 package io.recheck.ui.rest.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-@AllArgsConstructor
 public class RequestAccessDTO {
 
     private String userId;
     private String systemId;
     private String uoi;
 
+    public RequestAccessDTO(String userId, String systemId, String uoi) {
+        this.userId = userId.trim();
+        this.systemId = systemId.trim();
+        this.uoi = uoi.trim();
+    }
 }

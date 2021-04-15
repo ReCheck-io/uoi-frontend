@@ -1,12 +1,13 @@
 package io.recheck.ui.components.uoi.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-@AllArgsConstructor
 public class SearchByUoiModel {
 
     private String uoi;
 
+    public SearchByUoiModel(String uoi) {
+        this.uoi = uoi.trim();
+    }
 }
