@@ -48,6 +48,7 @@ public class PropertiesComponents implements ComponentsData<PropertiesModel> {
         this.data = data;
         subTitle.setText(PROPERTIES_UOI_TEXT + data.getUoi());
         componentMapLayout.getComponents().setData(data);
+        componentMapLayout.initLayout(componentMapLayout.getComponents());
     }
 
     public void clearData() {

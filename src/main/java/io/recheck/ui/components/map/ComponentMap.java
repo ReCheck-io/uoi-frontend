@@ -3,8 +3,6 @@ package io.recheck.ui.components.map;
 import com.vaadin.flow.component.Component;
 import io.recheck.ui.components.baseStructure.ComponentsData;
 import io.recheck.ui.components.map.entryConverter.Converter;
-import io.recheck.ui.components.map.entryConverter.ConverterKeyValueTextField;
-import io.recheck.ui.components.map.entryConverter.ConverterSearchView;
 import lombok.Data;
 
 import java.util.HashMap;
@@ -19,14 +17,6 @@ public class ComponentMap<KC extends Component, VC extends Component, D extends 
 
     public ComponentMap(Converter<KC, VC, D, KD, VD> converter) {
         this.converter = converter;
-    }
-
-    public static ComponentMap getForCreateView() {
-        return new ComponentMap(new ConverterKeyValueTextField());
-    }
-
-    public static ComponentMap getForSearchView() {
-        return new ComponentMap(new ConverterSearchView());
     }
 
     public D getData() {

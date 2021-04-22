@@ -37,7 +37,7 @@ public class CreateView extends Div {
     private SessionService sessionService;
 
     private UOIFormLayout uoiFormLayout = new UOIFormLayout(new UOIFormComponents());
-    private PropertiesLayout propertiesLayout = new PropertiesLayout(new PropertiesComponents(ComponentMap.getForCreateView()));
+    private PropertiesLayout propertiesLayout = new PropertiesLayout(new PropertiesComponents(new ComponentMap(new ConverterKeyValueTextField())));
 
     private UOIGrid uoiGrid;
     private GridVerticalLayout gridLayout;
@@ -61,9 +61,7 @@ public class CreateView extends Div {
         //Result / Grid layout
         createResultLayout.add(gridLayout);
 
-        HorizontalLayout mainCreateLayout = new HorizontalLayout();
-        mainCreateLayout.add(createResultLayout, propertiesLayout);
-        add(mainCreateLayout);
+        add(new HorizontalLayout(createResultLayout, propertiesLayout));
 
         applyCss();
     }
@@ -74,13 +72,17 @@ public class CreateView extends Div {
     }
 
     private void initListeners() {
-        uoiFormLayout.getComponents().createClickListener(e -> createClickListener());
+        uoiFormLayout.getComponents().createClickListener(e -> createUoiClickListener());
         uoiFormLayout.getComponents().updateClickListener(e -> updateParentUOIClickListener());
         uoiFormLayout.getComponents().cancelClickListener(e -> toCreateState());
 
         propertiesLayout.getComponents().updateClickListener(e -> updatePropertiesClickListener());
 
         uoiGrid.addItemClickListener((ClickListener<UOINode>) item -> toUpdateState(item));
+    }
+
+    private void updateDocumentsClickListener() {
+
     }
 
     private void applyCss() {
@@ -93,7 +95,7 @@ public class CreateView extends Div {
         propertiesLayout.addClassName("propertiesLayout");
     }
 
-    private void createClickListener() {
+    private void createUoiClickListener() {
         NewUoiDTO newUoiDTO = new NewUoiDTO(uoiFormLayout.getComponents().getData());
         if (StringUtils.hasText(newUoiDTO.getCountryCode()) || newUoiDTO.getLevel() != null) {
             ResponseEntity<UOINode> uoiNodeResponseEntity = restClientService.newUoi(newUoiDTO);
@@ -131,8 +133,7 @@ public class CreateView extends Div {
 
         propertiesLayout.toUpdateState();
         propertiesLayout.getComponents().clearData();
-        propertiesLayout.getComponents().setData(new PropertiesModel(uoiNode));
-        propertiesLayout.getComponents().getComponentMapLayout().initLayout(propertiesLayout.getComponents().getComponentMapLayout().getComponents());
+
     }
 
     private void toCreateState() {
