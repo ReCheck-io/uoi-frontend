@@ -1,15 +1,13 @@
 package io.recheck.ui.components.map;
 
 import com.vaadin.flow.component.Component;
-import io.recheck.ui.components.baseStructure.ComponentsData;
 import io.recheck.ui.components.map.entryConverter.Converter;
-import lombok.Data;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@Data
-public class ComponentMap<KC extends Component, VC extends Component, D extends MapModel, KD, VD> implements ComponentsData<D> {
+@lombok.Data
+public class ComponentMap<KC extends Component, VC extends Component, D extends MapModel, KD, VD> {
 
     private HashMap<KC, VC> currentMap = new HashMap<>();
     private D currentData;

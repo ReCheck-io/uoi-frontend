@@ -1,37 +1,64 @@
 package io.recheck.ui.components.uoi;
 
+import com.vaadin.flow.component.ClickEvent;
+import com.vaadin.flow.component.ComponentEventListener;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import io.recheck.ui.components.baseStructure.Layout;
+import com.vaadin.flow.component.textfield.PasswordField;
+import com.vaadin.flow.component.textfield.TextField;
+import io.recheck.ui.components.uoi.model.RequestAccessModel;
 
-public class RequestAccessLayout extends Dialog implements Layout<RequestAccessComponents> {
+public class RequestAccessLayout extends Dialog {
 
-    private RequestAccessComponents requestAccessComponents;
+    private TextField userNameField = new TextField();
+    private PasswordField passwordField = new PasswordField();
+    private Button confirmButton = new Button("Confirm");
+    private Button cancelButton = new Button("Cancel");
 
-    public RequestAccessLayout(RequestAccessComponents requestAccessComponents) {
-        this.requestAccessComponents = requestAccessComponents;
-        initLayout(requestAccessComponents);
+    private RequestAccessModel data;
+
+    public RequestAccessLayout() {
+        initLayout();
     }
 
-    @Override
-    public RequestAccessComponents getComponents() {
-        return requestAccessComponents;
+    public void confirmClickListener(ComponentEventListener<ClickEvent<Button>> listener) {
+        confirmButton.addClickListener(listener);
     }
 
-    @Override
-    public void initLayout(RequestAccessComponents components) {
+    public void cancelClickListener(ComponentEventListener<ClickEvent<Button>> listener) {
+        cancelButton.addClickListener(listener);
+    }
+
+    public RequestAccessModel getData() {
+        return data;
+    }
+
+    public void setData(RequestAccessModel data) {
+        this.data = data;
+    }
+
+    public void clearData() {
+        userNameField.setValue("");
+        passwordField.setValue("");
+        data = null;
+    }
+
+    public void initLayout() {
         setCloseOnEsc(true);
         setCloseOnOutsideClick(true);
 
         add(new VerticalLayout(
                 new Label("Please login to  access :"),
-                new Label(components.getData().getUoi()),
+                new Label(data.getUoi()),
                 new Label("on"),
-                new Label(components.getData().getUrl())));
+                new Label(data.getUrl())));
 
-        add(new VerticalLayout(components.getUserNameField(), components.getPasswordField()),
-                new HorizontalLayout(components.getConfirmButton(), components.getCancelButton()));
+        add(new VerticalLayout(userNameField, passwordField),
+                new HorizontalLayout(confirmButton, cancelButton));
+
+        setVisible(false);
     }
 }

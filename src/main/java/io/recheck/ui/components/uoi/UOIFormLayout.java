@@ -1,58 +1,122 @@
 package io.recheck.ui.components.uoi;
 
+import com.vaadin.flow.component.ClickEvent;
+import com.vaadin.flow.component.ComponentEventListener;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import io.recheck.ui.components.baseStructure.StatedLayout;
+import com.vaadin.flow.component.textfield.TextField;
+import io.recheck.ui.components.uoi.model.UOIFormModel;
+import io.recheck.ui.entity.LEVEL;
+import io.recheck.ui.entity.UOINode;
 
-public class UOIFormLayout extends Div implements StatedLayout<UOIFormComponents> {
+public class UOIFormLayout extends Div {
 
-    private UOIFormComponents uoiFormComponents;
+    private Label subTitle = new Label();
 
-    public UOIFormLayout(UOIFormComponents uoiFormComponents) {
-        this.uoiFormComponents = uoiFormComponents;
-        initLayout(uoiFormComponents);
+    private H3 title = new H3();
+
+    private TextField uoiField = new TextField();
+    private TextField countryCodeField = new TextField();
+    private ComboBox<LEVEL> levelField = new ComboBox<>();
+    private TextField parentUOIField = new TextField();
+
+    private Button createButton = new Button("Create");
+    private Button updateButton = new Button("Update Parent UOI");
+    private Button cancelButton = new Button("Cancel");
+
+    public UOIFormLayout() {
+        initLayout();
+        initComponents();
+    }
+
+    private void initComponents() {
+        levelField.setItems(LEVEL.values());
+        initPlaceHolders();
+    }
+
+    private void initPlaceHolders() {
+        countryCodeField.setPlaceholder("Country code");
+        levelField.setPlaceholder("Choose level");
+        parentUOIField.setPlaceholder("Parent UOI");
+    }
+
+    public void setData(UOIFormModel uoiFormModel) {
+        uoiField.setValue(uoiFormModel.getUoi());
+        countryCodeField.setValue(uoiFormModel.getCountryCode());
+        levelField.setValue(uoiFormModel.getLevel());
+        parentUOIField.setValue(uoiFormModel.getParentUOI());
+    }
+
+    public void clearData() {
+        uoiField.setValue("");
+        countryCodeField.setValue("");
+        levelField.setValue(null);
+        parentUOIField.setValue("");
+    }
+
+    public UOIFormModel getData() {
+        return new UOIFormModel(uoiField.getValue(), countryCodeField.getValue(), levelField.getValue(), parentUOIField.getValue());
+    }
+
+    public void createClickListener(ComponentEventListener<ClickEvent<Button>> listener) {
+        createButton.addClickListener(listener);
+    }
+
+    public void cancelClickListener(ComponentEventListener<ClickEvent<Button>> listener) {
+        cancelButton.addClickListener(listener);
+    }
+
+    public void updateClickListener(ComponentEventListener<ClickEvent<Button>> listener) {
+        updateButton.addClickListener(listener);
+    }
+
+    public void initLayout() {
+        FormLayout formLayout = new FormLayout();
+        formLayout.add(countryCodeField, levelField, parentUOIField);
+
+        HorizontalLayout buttonsLayout = new HorizontalLayout();
+        buttonsLayout.add(createButton, updateButton, cancelButton);
+
+        add(title, subTitle, formLayout, buttonsLayout);
+
+        setVisible(false);
     }
 
     public void toCreateState() {
+        clearData();
 
-        uoiFormComponents.getCountryCodeField().setEnabled(true);
-        uoiFormComponents.getLevelField().setEnabled(true);
+        title.setText("Create new");
+        subTitle.setVisible(false);
 
-        uoiFormComponents.getCreateButton().setVisible(true);
-        uoiFormComponents.getUpdateButton().setVisible(false);
-        uoiFormComponents.getCancelButton().setVisible(false);
+        countryCodeField.setEnabled(true);
+        levelField.setEnabled(true);
+
+        createButton.setVisible(true);
+        updateButton.setVisible(false);
+
+        setVisible(true);
     }
 
-    public void toUpdateState() {
+    public void toUpdateState(UOINode uoiNode) {
+        clearData();
+        setData(new UOIFormModel(uoiNode));
 
-        uoiFormComponents.getUpdateButton().setVisible(true);
-        uoiFormComponents.getCancelButton().setVisible(true);
-        uoiFormComponents.getCreateButton().setVisible(false);
+        title.setText("Update");
+        subTitle.setText(uoiNode.getUoi());
+        subTitle.setVisible(true);
 
-        uoiFormComponents.getCountryCodeField().setEnabled(false);
-        uoiFormComponents.getLevelField().setEnabled(false);
+        countryCodeField.setEnabled(false);
+        levelField.setEnabled(false);
+
+        updateButton.setVisible(true);
+        createButton.setVisible(false);
+
+        setVisible(true);
     }
 
-    @Override
-    public UOIFormComponents getComponents() {
-        return uoiFormComponents;
-    }
-
-    @Override
-    public void initLayout(UOIFormComponents components) {
-        FormLayout formLayout = new FormLayout();
-        formLayout.add(uoiFormComponents.getCountryCodeField(),
-                uoiFormComponents.getLevelField(),
-                uoiFormComponents.getParentUOIField());
-        add(formLayout);
-
-        HorizontalLayout buttonsLayout = new HorizontalLayout();
-        buttonsLayout.add(uoiFormComponents.getCreateButton(),
-                uoiFormComponents.getUpdateButton(),
-                uoiFormComponents.getCancelButton());
-        add(buttonsLayout);
-
-        toCreateState();
-    }
 }

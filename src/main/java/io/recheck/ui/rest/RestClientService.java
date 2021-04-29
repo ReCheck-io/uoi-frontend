@@ -1,5 +1,6 @@
 package io.recheck.ui.rest;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.recheck.ui.components.uoi.model.SearchByPropertiesModel;
@@ -14,12 +15,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -107,6 +109,36 @@ public class RestClientService implements Serializable {
     //==========================================================
     //             UTIL METHODS
     //==========================================================
+
+    public List<UOINode> getSearchByUOIResult(ResponseEntity<String> responseEntity) {
+        String responseBody = responseEntity.getBody();
+        HttpStatus statusCode = responseEntity.getStatusCode();
+        if (statusCode.value() == 404) {
+            return Collections.emptyList();
+        }
+        else {
+            ObjectMapper objectMapper = new ObjectMapper();
+            try {
+                UOINode uoiNode = objectMapper.readValue(responseBody, UOINode.class);
+                return Arrays.asList(uoiNode);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+            return Collections.emptyList();
+        }
+    }
+
+    public List<UOINode> getSearchByPropertiesResult(ResponseEntity<String> responseEntity) {
+        String responseBody = responseEntity.getBody();
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            List<UOINode> uoiNodes = objectMapper.readValue(responseBody, new TypeReference<List<UOINode>>(){});
+            return uoiNodes;
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
+    }
 
     private UriComponentsBuilder buildEndpoint(String endpoint) {
         return UriComponentsBuilder.fromHttpUrl(uoiBackendServerHost + endpoint);

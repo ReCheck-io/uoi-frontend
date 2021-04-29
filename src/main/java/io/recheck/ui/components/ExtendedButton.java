@@ -9,9 +9,17 @@ import java.util.Map;
 @Data
 public class ExtendedButton extends Button {
 
-    private Map<String, String> btnCustomProperties = new HashMap<>();
+    private Map<String, Object> btnCustomProperties = new HashMap<>();
 
     public ExtendedButton(String text) {
         super(text);
+    }
+
+    public void putProperty(String key, Object value) {
+        btnCustomProperties.put(key, value);
+    }
+
+    public Object getProperty(String key) {
+        return btnCustomProperties.get(key);
     }
 }

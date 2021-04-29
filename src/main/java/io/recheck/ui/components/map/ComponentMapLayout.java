@@ -4,28 +4,15 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
-import io.recheck.ui.components.baseStructure.Layout;
-
-
-public class ComponentMapLayout<KC extends Component, VC extends Component> extends VerticalLayout implements Layout<ComponentMap<KC, VC, ?, ?, ?>> {
+public class ComponentMapLayout<KC extends Component, VC extends Component> extends VerticalLayout {
 
     private final ComponentMap<KC, VC, ?, ?, ?> componentMap;
 
     public ComponentMapLayout(ComponentMap<KC, VC, ?, ?, ?> componentMap) {
         this.componentMap = componentMap;
-        initLayout(componentMap);
     }
 
-    public void removeAll() {
-        componentMap.clearData();
-        super.removeAll();
-    }
-
-    public ComponentMap getComponents() {
-        return componentMap;
-    }
-
-    public void initLayout(ComponentMap<KC, VC, ?, ?, ?> componentMap) {
+    public void initLayout() {
         componentMap.getCurrentMap().forEach((key, value) -> {
             add(key, value);
         });

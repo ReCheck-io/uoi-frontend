@@ -2,28 +2,32 @@ package io.recheck.ui.components;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.tabs.Tabs;
-import io.recheck.ui.components.baseStructure.Layout;
 
 import java.util.Arrays;
 
 public class LayoutTabs extends Tabs {
 
+    private LayoutTab[] layouts;
+
     public LayoutTabs(LayoutTab... layouts) {
         super(layouts);
-        Arrays.asList(layouts).forEach(page -> ((Component) page.getLayout()).setVisible(false));
+        this.layouts = layouts;
+        Arrays.asList(layouts).forEach(page -> page.getLayout().setVisible(false));
 
-        Layout layout = Arrays.asList(layouts).stream().findFirst().get().getLayout();
-        layout.getComponents().clearData();
-        ((Component) layout).setVisible(true);
+        Component layout = Arrays.asList(layouts).stream().findFirst().get().getLayout();
+        ((LayoutTabModel) layout).clearData();
+        layout.setVisible(true);
 
-        addSelectedChangeListener(event -> {
-            Arrays.asList(layouts).forEach(page -> ((Component) page.getLayout()).setVisible(false));
+        addSelectedChangeListener(event -> selectedChangeEvent());
+    }
 
-            LayoutTab selectedLayoutTab = (LayoutTab) this.getSelectedTab();
-            Layout selectedLayout = selectedLayoutTab.getLayout();
-            selectedLayout.getComponents().clearData();
-            ((Component) selectedLayout).setVisible(true);
-        });
+    public void selectedChangeEvent() {
+        Arrays.asList(layouts).forEach(page -> page.getLayout().setVisible(false));
+
+        LayoutTab selectedLayoutTab = (LayoutTab) this.getSelectedTab();
+        Component selectedLayout = selectedLayoutTab.getLayout();
+        ((LayoutTabModel) selectedLayout).clearData();
+        selectedLayout.setVisible(true);
     }
 
 }

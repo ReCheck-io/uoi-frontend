@@ -2,11 +2,11 @@
   display: block;
 }
 
-.createResultLayout {
-  padding: 30px;
-  width: 69%;
+.leftColumnLayout {
+  padding: 20px;
+  width: 62%;
 }
 
-.propertiesLayout {
-    width: 29%;
+.rightColumnLayout {
+    width: 39%;
 }

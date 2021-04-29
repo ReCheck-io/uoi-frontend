@@ -1,40 +1,79 @@
 package io.recheck.ui.components.uoi;
 
+import com.vaadin.flow.component.ClickEvent;
+import com.vaadin.flow.component.ComponentEventListener;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import io.recheck.ui.components.baseStructure.StatedLayout;
+import io.recheck.ui.components.map.ComponentMap;
+import io.recheck.ui.components.map.ComponentMapLayout;
+import io.recheck.ui.components.uoi.model.PropertiesModel;
 
-public class PropertiesLayout extends VerticalLayout implements StatedLayout<PropertiesComponents> {
+public class PropertiesLayout extends VerticalLayout {
 
-    private PropertiesComponents propertiesComponents;
+    private H3 title = new H3("Properties");
+    private Label subTitle = new Label();
 
-    public PropertiesLayout(PropertiesComponents propertiesComponents) {
-        this.propertiesComponents = propertiesComponents;
-        initLayout(propertiesComponents);
+    private Button updateButton = new Button("Update");
+    private Button cancelButton = new Button("Cancel");
+    private Button addEntryButton = new Button("Add");
+
+    private final ComponentMapLayout componentMapLayout;
+    private final ComponentMap componentMap;
+
+    public PropertiesLayout(ComponentMap componentMap) {
+        this.componentMap = componentMap;
+        this.componentMapLayout = new ComponentMapLayout(componentMap);
+        initLayout();
+        initListeners();
     }
 
-    public void toCreateState() {
-        setVisible(false);
+    private void initListeners() {
+        addEntryButton.addClickListener(e -> componentMapLayout.addEmpty());
     }
 
-    public void toUpdateState() {
-        setVisible(true);
+    public void updateClickListener(ComponentEventListener<ClickEvent<Button>> listener) {
+        updateButton.addClickListener(listener);
     }
 
-
-    public PropertiesComponents getComponents() {
-        return propertiesComponents;
+    public void cancelClickListener(ComponentEventListener<ClickEvent<Button>> listener) {
+        cancelButton.addClickListener(listener);
     }
 
-    public void initLayout(PropertiesComponents components) {
+    public PropertiesModel getData() {
+        return (PropertiesModel) componentMap.getData();
+    }
+
+    public void setDataAndVisible(PropertiesModel data, boolean visible) {
+        this.setData(data);
+        this.setVisible(visible);
+    }
+
+    private void setData(PropertiesModel data) {
+        clearData();
+
+        subTitle.setText(data.getUoi());
+        componentMap.setData(data);
+
+        componentMapLayout.initLayout();
+    }
+
+    private void clearData() {
+        componentMap.clearData();
+        componentMapLayout.removeAll();
+    }
+
+    private void initLayout() {
         HorizontalLayout propertiesLayoutButtons = new HorizontalLayout();
-        propertiesLayoutButtons.add(propertiesComponents.getUpdateButton(), propertiesComponents.getAddEntryButton());
+        propertiesLayoutButtons.add(updateButton, cancelButton);
 
         VerticalLayout propertiesLayoutHeader = new VerticalLayout();
-        propertiesLayoutHeader.add(propertiesComponents.getTitle(), propertiesComponents.getSubTitle(), propertiesLayoutButtons);
+        propertiesLayoutHeader.add(title, subTitle, propertiesLayoutButtons, addEntryButton);
 
-        add(propertiesLayoutHeader, propertiesComponents.getComponentMapLayout());
+        add(propertiesLayoutHeader, componentMapLayout);
 
-        toCreateState();
+        setVisible(false);
     }
 }
