@@ -11,7 +11,7 @@ import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import io.recheck.uoi.ui.components.model.RequestAccessModel;
 
-public class RequestAccessLayout extends Dialog {
+public class DocumentsRequestAccessDialog extends Dialog {
 
     private TextField userNameField = new TextField();
     private PasswordField passwordField = new PasswordField();
@@ -19,21 +19,19 @@ public class RequestAccessLayout extends Dialog {
     private Button cancelButton = new Button("Cancel");
 
     private Label uoiLabel = new Label();
+    private Label invalidAccount = new Label("Invalid account");
 
-    public RequestAccessLayout() {
+    public DocumentsRequestAccessDialog() {
         initLayout();
+        initListeners();
     }
 
     public void confirmClickListener(ComponentEventListener<ClickEvent<Button>> listener) {
         confirmButton.addClickListener(listener);
     }
 
-    public void cancelClickListener(ComponentEventListener<ClickEvent<Button>> listener) {
-        cancelButton.addClickListener(listener);
-    }
-
     public RequestAccessModel getData() {
-        return new RequestAccessModel(uoiLabel.getText(), userNameField.getValue(), passwordField.getValue());
+        return new RequestAccessModel(userNameField.getValue(), passwordField.getValue(), uoiLabel.getText());
     }
 
     public void setData(String uoi) {
@@ -41,6 +39,7 @@ public class RequestAccessLayout extends Dialog {
     }
 
     public void clearData() {
+        invalidAccount.setVisible(false);
         userNameField.setValue("");
         passwordField.setValue("");
     }
@@ -49,9 +48,27 @@ public class RequestAccessLayout extends Dialog {
         setCloseOnEsc(true);
         setCloseOnOutsideClick(true);
 
-        add(new VerticalLayout(new Label("Please login to  access documents for :"), uoiLabel));
+        invalidAccount.setClassName("redText");
+
+        add(new VerticalLayout(new Label("Please login to  access documents for :"), uoiLabel, invalidAccount));
 
         add(new VerticalLayout(userNameField, passwordField),
                 new HorizontalLayout(confirmButton, cancelButton));
+    }
+
+    public void initListeners() {
+        cancelButton.addClickListener(listener -> {
+            close();
+        });
+    }
+
+    public void invalidAccount() {
+        invalidAccount.setVisible(true);
+    }
+
+    public void open(String uoi) {
+        setData(uoi);
+        clearData();
+        super.open();
     }
 }

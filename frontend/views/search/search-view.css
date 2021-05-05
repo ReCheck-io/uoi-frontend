@@ -10,3 +10,7 @@
 .rightColumnLayout {
     width: 39%;
 }
+
+.redText {
+    color: red;
+}

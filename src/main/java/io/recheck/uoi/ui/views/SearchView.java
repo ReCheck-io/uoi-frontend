@@ -7,14 +7,12 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import io.recheck.uoi.entity.UOINode;
 import io.recheck.uoi.ui.components.LayoutTab;
 import io.recheck.uoi.ui.components.LayoutTabs;
 import io.recheck.uoi.ui.components.SearchByPropertiesLayoutTab;
 import io.recheck.uoi.ui.components.SearchByUoiLayoutTab;
 import io.recheck.uoi.ui.components.uoiGrid.UOIGrid;
-import io.recheck.uoi.entity.UOINode;
-import io.recheck.uoi.rest.RestClientService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Collections;
@@ -34,9 +32,7 @@ public class SearchView extends BaseView {
     private VerticalLayout searchLayout = new VerticalLayout();
 
 
-    public SearchView(@Autowired RestClientService restClientService) {
-        this.restClientService = restClientService;
-
+    public SearchView() {
         initListeners();
         initLayout();
     }

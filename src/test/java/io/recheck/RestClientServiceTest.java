@@ -1,13 +1,13 @@
 package io.recheck;
 
-import io.recheck.uoi.rest.RestClientService;
-import io.recheck.uoi.ui.components.model.SearchByPropertiesModel;
-import io.recheck.uoi.ui.components.model.SearchByUoiModel;
+import io.recheck.rest.RestClientService;
+import io.recheck.rest.dto.NewUoiDTO;
+import io.recheck.rest.dto.UpdatePropertiesDTO;
+import io.recheck.rest.dto.UpdateRelationshipDTO;
 import io.recheck.uoi.entity.LEVEL;
 import io.recheck.uoi.entity.UOINode;
-import io.recheck.uoi.rest.dto.NewUoiDTO;
-import io.recheck.uoi.rest.dto.UpdatePropertiesDTO;
-import io.recheck.uoi.rest.dto.UpdateRelationshipDTO;
+import io.recheck.uoi.ui.components.model.SearchByPropertiesModel;
+import io.recheck.uoi.ui.components.model.SearchByUoiModel;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;

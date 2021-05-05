@@ -2,9 +2,9 @@ package io.recheck.uoi.ui.components.uoiGrid;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.data.provider.ListDataProvider;
-import io.recheck.uoi.ui.components.ExtendedGrid;
 import io.recheck.uoi.entity.DocumentsSource;
 import io.recheck.uoi.entity.UOINode;
+import io.recheck.uoi.ui.components.ExtendedGrid;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -21,16 +21,11 @@ public class UOIGrid extends ExtendedGrid<UOINode> {
         super(dataProvider);
         this.uoiGridListeners = uoiGridListeners;
         initColumns();
-        configureColumns();
     }
 
     protected void initColumns() {
-        initUoiColumn();
-        initComponentColumns();
-        configureColumns();
-    }
+        addColumn(UOINode::getUoi);
 
-    protected void initComponentColumns() {
         addComponentColumn(uoiNode -> {
             Button button = new Button("Data");
             button.addClickListener(e -> {
@@ -62,13 +57,7 @@ public class UOIGrid extends ExtendedGrid<UOINode> {
             });
             return button;
         });
-    }
 
-    protected void initUoiColumn() {
-        addColumn(UOINode::getUoi);
-    }
-
-    protected void configureColumns() {
         getColumns().forEach(c -> c.setAutoWidth(true));
         setSelectionMode(SelectionMode.NONE);
     }

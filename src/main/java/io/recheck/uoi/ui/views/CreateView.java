@@ -9,13 +9,10 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
-import io.recheck.SessionService;
-import io.recheck.uoi.ui.components.uoiGrid.UOIGrid;
+import io.recheck.rest.dto.NewUoiDTO;
 import io.recheck.uoi.entity.UOINode;
-import io.recheck.uoi.rest.RestClientService;
-import io.recheck.uoi.rest.dto.NewUoiDTO;
+import io.recheck.uoi.ui.components.uoiGrid.UOIGrid;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 
@@ -27,17 +24,12 @@ import org.springframework.util.StringUtils;
 @Slf4j
 public class CreateView extends BaseView {
 
-    private SessionService sessionService;
-
     private Button newButton = new Button("New UOI");
 
     private VerticalLayout viewLayout = new VerticalLayout();
 
 
-    public CreateView(@Autowired RestClientService restClientService, @Autowired SessionService sessionService) {
-        this.restClientService = restClientService;
-        this.sessionService = sessionService;
-
+    public CreateView() {
         initListeners();
         initLayout();
     }

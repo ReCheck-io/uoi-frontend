@@ -4,11 +4,11 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
-public class ComponentMapLayout<KC extends Component, VC extends Component> extends VerticalLayout {
+public class ComponentMapVerticalLayout<KC extends Component, VC extends Component> extends VerticalLayout {
 
     private final ComponentMap<KC, VC, ?, ?, ?> componentMap;
 
-    public ComponentMapLayout(ComponentMap<KC, VC, ?, ?, ?> componentMap) {
+    public ComponentMapVerticalLayout(ComponentMap<KC, VC, ?, ?, ?> componentMap) {
         this.componentMap = componentMap;
     }
 

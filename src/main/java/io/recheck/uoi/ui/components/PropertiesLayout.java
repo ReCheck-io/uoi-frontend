@@ -8,7 +8,7 @@ import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import io.recheck.uoi.ui.components.map.ComponentMap;
-import io.recheck.uoi.ui.components.map.ComponentMapLayout;
+import io.recheck.uoi.ui.components.map.ComponentMapVerticalLayout;
 import io.recheck.uoi.ui.components.model.PropertiesModel;
 
 public class PropertiesLayout extends VerticalLayout {
@@ -20,18 +20,18 @@ public class PropertiesLayout extends VerticalLayout {
     private Button cancelButton = new Button("Cancel");
     private Button addEntryButton = new Button("Add");
 
-    private final ComponentMapLayout componentMapLayout;
+    private final ComponentMapVerticalLayout componentMapVerticalLayout;
     private final ComponentMap componentMap;
 
     public PropertiesLayout(ComponentMap componentMap) {
         this.componentMap = componentMap;
-        this.componentMapLayout = new ComponentMapLayout(componentMap);
+        this.componentMapVerticalLayout = new ComponentMapVerticalLayout(componentMap);
         initLayout();
         initListeners();
     }
 
     private void initListeners() {
-        addEntryButton.addClickListener(e -> componentMapLayout.addEmpty());
+        addEntryButton.addClickListener(e -> componentMapVerticalLayout.addEmpty());
     }
 
     public void updateClickListener(ComponentEventListener<ClickEvent<Button>> listener) {
@@ -53,16 +53,14 @@ public class PropertiesLayout extends VerticalLayout {
 
     private void setData(PropertiesModel data) {
         clearData();
-
         subTitle.setText(data.getUoi());
         componentMap.setData(data);
-
-        componentMapLayout.initLayout();
+        componentMapVerticalLayout.initLayout();
     }
 
     private void clearData() {
         componentMap.clearData();
-        componentMapLayout.removeAll();
+        componentMapVerticalLayout.removeAll();
     }
 
     private void initLayout() {
@@ -72,7 +70,7 @@ public class PropertiesLayout extends VerticalLayout {
         VerticalLayout propertiesLayoutHeader = new VerticalLayout();
         propertiesLayoutHeader.add(title, subTitle, propertiesLayoutButtons, addEntryButton);
 
-        add(propertiesLayoutHeader, componentMapLayout);
+        add(propertiesLayoutHeader, componentMapVerticalLayout);
 
         setVisible(false);
     }

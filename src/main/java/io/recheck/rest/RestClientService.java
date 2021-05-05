@@ -1,15 +1,12 @@
-package io.recheck.uoi.rest;
+package io.recheck.rest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.recheck.rest.dto.*;
 import io.recheck.uoi.entity.UOINode;
 import io.recheck.uoi.ui.components.model.SearchByPropertiesModel;
 import io.recheck.uoi.ui.components.model.SearchByUoiModel;
-import io.recheck.uoi.rest.dto.NewUoiDTO;
-import io.recheck.uoi.rest.dto.RequestAccessDTO;
-import io.recheck.uoi.rest.dto.UpdatePropertiesDTO;
-import io.recheck.uoi.rest.dto.UpdateRelationshipDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -37,11 +34,11 @@ public class RestClientService implements Serializable {
         restTemplate = new RestTemplate();
     }
 
-    public ResponseEntity<String> requestAccess(RequestAccessDTO requestAccessDTO) {
+    public ResponseEntity<CirdaxDocumentsResponseDTO> requestAccess(CirdaxDocumentsRequestAccessDTO requestAccessDTO) {
         HttpEntity entity = buildHttpEntityWithHeaders(requestAccessDTO);
-        UriComponentsBuilder builder = buildEndpoint("/uoi");
+        UriComponentsBuilder builder = buildEndpoint("/documents/cirdax");
         log.debug("Send PUT {} \n Body: {}", builder.toUriString(), entity);
-        ResponseEntity<String> responseEntity = restTemplate.exchange(builder.toUriString(), HttpMethod.POST, entity, String.class);
+        ResponseEntity<CirdaxDocumentsResponseDTO> responseEntity = restTemplate.exchange(builder.toUriString(), HttpMethod.POST, entity, CirdaxDocumentsResponseDTO.class);
         log.debug("Receive {}", responseEntity);
         return responseEntity;
     }

@@ -1,7 +1,7 @@
-package io.recheck.uoi.rest.dto;
+package io.recheck.rest.dto;
 
-import io.recheck.uoi.ui.components.model.UOIFormModel;
 import io.recheck.uoi.entity.LEVEL;
+import io.recheck.uoi.ui.components.model.UOIFormModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

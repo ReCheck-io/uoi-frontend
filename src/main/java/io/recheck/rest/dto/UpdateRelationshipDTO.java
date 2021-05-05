@@ -1,4 +1,4 @@
-package io.recheck.uoi.rest.dto;
+package io.recheck.rest.dto;
 
 import io.recheck.uoi.entity.RELATIONSHIP;
 import lombok.Data;

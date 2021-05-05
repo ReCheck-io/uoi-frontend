@@ -6,7 +6,6 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import io.recheck.uoi.entity.DocumentsSource;
 import io.recheck.uoi.ui.components.model.DocumentsModel;
 
 
@@ -25,11 +24,7 @@ public class DocumentsLayout extends VerticalLayout {
     }
 
     public void initLayout() {
-        VerticalLayout propertiesLayoutHeader = new VerticalLayout();
-        propertiesLayoutHeader.add(title, subTitle);
-
-        add(propertiesLayoutHeader, sourceListLayout, closeButton);
-
+        add(new VerticalLayout(title, subTitle), sourceListLayout, closeButton);
         setVisible(false);
     }
 
@@ -37,17 +32,21 @@ public class DocumentsLayout extends VerticalLayout {
         closeButton.addClickListener(listener);
     }
 
-    public void setDataAndVisible(DocumentsModel documentsModel, boolean visible) {
-        this.setData(documentsModel);
+    public void setDataAndVisible(DocumentsModel documentsModel, DocumentsListeners documentsListeners, boolean visible) {
+        this.setData(documentsModel, documentsListeners);
         this.setVisible(visible);
     }
 
-    private void setData(DocumentsModel documentsModel) {
+    private void setData(DocumentsModel documentsModel, DocumentsListeners documentsListeners) {
         this.documentsModel = documentsModel;
         clearData();
         subTitle.setText(documentsModel.getUoi());
-        documentsModel.getDocuments().forEach(d -> {
-            sourceListLayout.add(toComponent(d));
+        documentsModel.getDocuments().forEach(source -> {
+            Button accessButton = new Button("Access " + source.name());
+            accessButton.addClickListener(e -> {
+                documentsListeners.getDocumentsAccess(source);
+            });
+            sourceListLayout.add(accessButton);
         });
     }
 
@@ -55,24 +54,4 @@ public class DocumentsLayout extends VerticalLayout {
         sourceListLayout.removeAll();
     }
 
-    private ExtendedButton toComponent(DocumentsSource source) {
-        ExtendedButton extendedButton = new ExtendedButton("Access " + source.name());
-        extendedButton.putProperty("DocumentsSource", source);
-
-        extendedButton.addClickListener(e -> {
-            RequestAccessLayout requestAccessLayout = new RequestAccessLayout();
-            requestAccessLayout.setData(documentsModel.getUoi());
-            requestAccessLayout.open();
-
-            requestAccessLayout.cancelClickListener(listener -> {
-                requestAccessLayout.clearData(); requestAccessLayout.close();
-            });
-
-            requestAccessLayout.confirmClickListener(listener -> {
-                requestAccessLayout.clearData(); requestAccessLayout.close();
-            });
-        });
-
-        return extendedButton;
-    }
 }
