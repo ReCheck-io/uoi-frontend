@@ -9,10 +9,12 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
+import io.recheck.SessionService;
+import io.recheck.accounts.AccountService;
+import io.recheck.rest.RestClientService;
 import io.recheck.rest.dto.NewUoiDTO;
 import io.recheck.uoi.entity.UOINode;
 import io.recheck.uoi.ui.components.uoiGrid.UOIGrid;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 
@@ -21,7 +23,6 @@ import org.springframework.util.StringUtils;
 @Route(value = "create", layout = MainView.class)
 @RouteAlias(value = "", layout = MainView.class)
 @PageTitle("Create / Update")
-@Slf4j
 public class CreateView extends BaseView {
 
     private Button newButton = new Button("New UOI");
@@ -29,7 +30,8 @@ public class CreateView extends BaseView {
     private VerticalLayout viewLayout = new VerticalLayout();
 
 
-    public CreateView() {
+    public CreateView(RestClientService restClientService, SessionService sessionService, AccountService accountService) {
+        super(restClientService, sessionService, accountService);
         initListeners();
         initLayout();
     }

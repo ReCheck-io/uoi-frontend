@@ -7,6 +7,9 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import io.recheck.SessionService;
+import io.recheck.accounts.AccountService;
+import io.recheck.rest.RestClientService;
 import io.recheck.uoi.entity.UOINode;
 import io.recheck.uoi.ui.components.LayoutTab;
 import io.recheck.uoi.ui.components.LayoutTabs;
@@ -32,7 +35,8 @@ public class SearchView extends BaseView {
     private VerticalLayout searchLayout = new VerticalLayout();
 
 
-    public SearchView() {
+    public SearchView(RestClientService restClientService, SessionService sessionService, AccountService accountService) {
+        super(restClientService, sessionService, accountService);
         initListeners();
         initLayout();
     }

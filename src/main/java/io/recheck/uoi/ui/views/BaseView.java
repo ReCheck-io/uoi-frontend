@@ -20,21 +20,15 @@ import io.recheck.uoi.ui.components.model.RequestAccessModel;
 import io.recheck.uoi.ui.components.model.UOIFormModel;
 import io.recheck.uoi.ui.components.uoiGrid.UOIGrid;
 import io.recheck.uoi.ui.components.uoiGrid.UOIGridListeners;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Optional;
 
 public class BaseView extends Div {
 
-    @Autowired
-    protected RestClientService restClientService;
-
-    @Autowired
-    protected SessionService sessionService;
-
-    @Autowired
-    protected AccountService accountService;
+    protected final RestClientService restClientService;
+    protected final SessionService sessionService;
+    protected final AccountService accountService;
 
     protected UOIFormLayout uoiFormLayout = new UOIFormLayout();
     protected PropertiesLayout propertiesLayout = new PropertiesLayout(new ComponentMap(new ConverterKeyValueTextField()));
@@ -49,6 +43,12 @@ public class BaseView extends Div {
     protected VerticalLayout gridLayout;
 
     protected VerticalLayout viewLayout = new VerticalLayout();
+
+    public BaseView(RestClientService restClientService, SessionService sessionService, AccountService accountService) {
+        this.restClientService = restClientService;
+        this.sessionService = sessionService;
+        this.accountService = accountService;
+    }
 
     protected void initListeners() {
 

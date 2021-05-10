@@ -1,7 +1,7 @@
 package io.recheck.uoi.ui.components.model;
 
-import io.recheck.uoi.ui.components.map.MapModel;
 import io.recheck.uoi.entity.UOINode;
+import io.recheck.uoi.ui.components.map.MapModel;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 

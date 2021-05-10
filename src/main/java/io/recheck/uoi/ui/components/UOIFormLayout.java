@@ -10,9 +10,9 @@ import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
-import io.recheck.uoi.ui.components.model.UOIFormModel;
 import io.recheck.uoi.entity.LEVEL;
 import io.recheck.uoi.entity.UOINode;
+import io.recheck.uoi.ui.components.model.UOIFormModel;
 
 public class UOIFormLayout extends Div {
 
