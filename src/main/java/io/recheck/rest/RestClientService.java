@@ -16,6 +16,9 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -150,7 +153,7 @@ public class RestClientService implements Serializable {
                 UriComponentsBuilder.fromHttpUrl(uoiBackendServerHost + endpoint);
 
         for (Map.Entry<String, String> entry : dtoAsMap.entrySet()) {
-            builder.queryParam(entry.getKey(), entry.getValue());
+            builder.queryParam(entry.getKey(), encodeValue(entry.getValue()));
         }
 
         return builder;
@@ -166,6 +169,15 @@ public class RestClientService implements Serializable {
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         return new HttpEntity<>(dto, headers);
+    }
+
+    private String encodeValue(String value) {
+        try {
+            return URLEncoder.encode(value, StandardCharsets.UTF_8.toString());
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
 }
