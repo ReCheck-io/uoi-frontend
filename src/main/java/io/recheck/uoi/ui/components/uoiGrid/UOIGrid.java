@@ -62,26 +62,10 @@ public class UOIGrid extends ExtendedGrid<UOINode> {
         setSelectionMode(SelectionMode.NONE);
     }
 
-    public void setDocuments(String uoi, List<DocumentsSource> documents) {
+    public void addChild(String uoi, String child) {
         Optional<UOINode> uoiNode = findItemByUoi(uoi);
         if (uoiNode.isPresent()) {
-            uoiNode.get().setDocuments(documents);
-        }
-        refreshUI();
-    }
-
-    public void setChildrens(String uoi, ArrayList<String> children) {
-        Optional<UOINode> uoiNode = findItemByUoi(uoi);
-        if (uoiNode.isPresent()) {
-            uoiNode.get().setChildren(children);
-        }
-        refreshUI();
-    }
-
-    public void setProperties(String uoi, Map<String, String> properties) {
-        Optional<UOINode> uoiNode = findItemByUoi(uoi);
-        if (uoiNode.isPresent()) {
-            uoiNode.get().setProperties(properties);
+            uoiNode.get().getChildren().add(child);
         }
         refreshUI();
     }
@@ -90,6 +74,14 @@ public class UOIGrid extends ExtendedGrid<UOINode> {
         Optional<UOINode> uoiNode = findItemByUoi(uoi);
         if (uoiNode.isPresent()) {
             uoiNode.get().setParentUOI(parentUoi);
+        }
+        refreshUI();
+    }
+
+    public void setProperties(String uoi, Map<String, String> properties) {
+        Optional<UOINode> uoiNode = findItemByUoi(uoi);
+        if (uoiNode.isPresent()) {
+            uoiNode.get().setProperties(properties);
         }
         refreshUI();
     }

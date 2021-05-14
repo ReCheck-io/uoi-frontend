@@ -59,6 +59,7 @@ public class BaseView extends Div {
             restClientService.makeRelationship(updateRelationshipDTO);
 
             uoiGrid.setParentUoi(updateRelationshipDTO.getChildNode(), updateRelationshipDTO.getParentNode());
+            uoiGrid.addChild(updateRelationshipDTO.getParentNode(), updateRelationshipDTO.getChildNode());
 
             toInitState();
         });

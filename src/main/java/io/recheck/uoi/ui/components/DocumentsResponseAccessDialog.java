@@ -60,6 +60,9 @@ public class DocumentsResponseAccessDialog extends Dialog {
             });
             content.add(vl);
         }
+        else {
+            content.add(data.getRawResponse());
+        }
 
         open();
     }

@@ -16,7 +16,7 @@ public class AccountService {
     private Account loggedAccount;
 
     public AccountService() {
-        accounts.add(new Account(1L, "Test", "test"));
+        accounts.add(new Account(1L, "Ivaylo-Rusev-Recheck", "test"));
     }
 
     public Optional<Account> findAccountByUserName(String userName) {

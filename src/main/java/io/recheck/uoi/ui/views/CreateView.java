@@ -70,7 +70,11 @@ public class CreateView extends BaseView {
             NewUoiDTO newUoiDTO = new NewUoiDTO(uoiFormLayout.getData());
             if (StringUtils.hasText(newUoiDTO.getCountryCode()) || newUoiDTO.getLevel() != null) {
                 ResponseEntity<UOINode> uoiNodeResponseEntity = restClientService.newUoi(newUoiDTO);
-                uoiGrid.addItem(uoiNodeResponseEntity.getBody());
+                UOINode savedUoiNode = uoiNodeResponseEntity.getBody();
+                uoiGrid.addItem(savedUoiNode);
+                if (StringUtils.hasText(savedUoiNode.getParentUOI())) {
+                    uoiGrid.addChild(savedUoiNode.getParentUOI(), savedUoiNode.getUoi());
+                }
             }
             toInitState();
         });
