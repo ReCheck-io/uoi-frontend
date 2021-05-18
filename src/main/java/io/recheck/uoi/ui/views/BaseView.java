@@ -6,10 +6,7 @@ import io.recheck.SessionService;
 import io.recheck.accounts.AccountService;
 import io.recheck.accounts.entity.Account;
 import io.recheck.rest.RestClientService;
-import io.recheck.rest.dto.CirdaxDocumentsRequestAccessDTO;
-import io.recheck.rest.dto.CirdaxDocumentsResponseDTO;
-import io.recheck.rest.dto.UpdatePropertiesDTO;
-import io.recheck.rest.dto.UpdateRelationshipDTO;
+import io.recheck.rest.dto.*;
 import io.recheck.uoi.entity.UOINode;
 import io.recheck.uoi.ui.components.*;
 import io.recheck.uoi.ui.components.map.ComponentMap;
@@ -101,10 +98,10 @@ public class BaseView extends Div {
         });
 
         documentsRequestAccessListeners = (uoi, account) -> {
-            CirdaxDocumentsRequestAccessDTO accessDTO = new CirdaxDocumentsRequestAccessDTO(uoi, account.getUserName(), "UOI Frontend");
-            ResponseEntity<CirdaxDocumentsResponseDTO> cirdaxDocumentsResponseDTOResponseEntity = restClientService.requestAccess(accessDTO);
-            CirdaxDocumentsResponseDTO cirdaxDocumentsResponseDTO = cirdaxDocumentsResponseDTOResponseEntity.getBody();
-            documentsResponseAccessDialog.open(cirdaxDocumentsResponseDTO);
+            CirdaxAccessRequestDTO accessDTO = new CirdaxAccessRequestDTO(uoi, account.getUserName(), "UOI Frontend");
+            ResponseEntity<CirdaxResponseWrapperDTO> cirdaxDocumentsResponseDTOResponseEntity = restClientService.requestAccess(accessDTO);
+            CirdaxResponseWrapperDTO cirdaxResponseWrapper = cirdaxDocumentsResponseDTOResponseEntity.getBody();
+            documentsResponseAccessDialog.open(cirdaxResponseWrapper);
         };
 
 

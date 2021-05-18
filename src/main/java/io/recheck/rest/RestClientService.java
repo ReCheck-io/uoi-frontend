@@ -37,11 +37,11 @@ public class RestClientService implements Serializable {
         restTemplate = new RestTemplate();
     }
 
-    public ResponseEntity<CirdaxDocumentsResponseDTO> requestAccess(CirdaxDocumentsRequestAccessDTO requestAccessDTO) {
+    public ResponseEntity<CirdaxResponseWrapperDTO> requestAccess(CirdaxAccessRequestDTO requestAccessDTO) {
         HttpEntity entity = buildHttpEntityWithHeaders(requestAccessDTO);
         UriComponentsBuilder builder = buildEndpoint("/documents/cirdax");
-        log.debug("Send PUT {} \n Body: {}", builder.toUriString(), entity);
-        ResponseEntity<CirdaxDocumentsResponseDTO> responseEntity = restTemplate.exchange(builder.toUriString(), HttpMethod.POST, entity, CirdaxDocumentsResponseDTO.class);
+        log.debug("Send POST {} \n Body: {}", builder.toUriString(), entity);
+        ResponseEntity<CirdaxResponseWrapperDTO> responseEntity = restTemplate.exchange(builder.toUriString(), HttpMethod.POST, entity, CirdaxResponseWrapperDTO.class);
         log.debug("Receive {}", responseEntity);
         return responseEntity;
     }

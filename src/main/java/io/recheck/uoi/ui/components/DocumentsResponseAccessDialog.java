@@ -7,12 +7,12 @@ import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import io.recheck.rest.dto.CirdaxDocumentsResponseDTO;
+import io.recheck.rest.dto.CirdaxResponseWrapperDTO;
 import org.springframework.util.StringUtils;
 
 public class DocumentsResponseAccessDialog extends Dialog {
 
-    private H3 title = new H3("Documents");
+    private H3 title = new H3();
 
     private Button closeButton = new Button("Close");
 
@@ -37,31 +37,39 @@ public class DocumentsResponseAccessDialog extends Dialog {
         add(closeButton);
     }
 
-    public void open(CirdaxDocumentsResponseDTO data) {
+    public void open(CirdaxResponseWrapperDTO data) {
         content.removeAll();
 
-        if (StringUtils.hasText(data.getAccessTokenState())) {
-            content.add(data.getAccessTokenState());
+        if (data.getAccessResponse() != null) {
+            title.setText("Request Access response: ");
+            content.add(data.getAccessResponse().getRawResponse());
         }
-        else if (!data.getCirdaxDocumentsDTOList().isEmpty()) {
-            VerticalLayout vl = new VerticalLayout();
-            data.getCirdaxDocumentsDTOList().forEach(e -> {
-                HorizontalLayout hl = new HorizontalLayout();
-                if (StringUtils.hasText(e.getDeepLinkUrl())) {
-                    Anchor a = new Anchor(e.getDeepLinkUrl(), e.getDocumentFileName());
-                    a.setTarget("_blank");
-                    hl.add(a);
-                }
-                else {
-                    hl.add(new Text(e.getDocumentFileName()));
-                }
 
-                vl.add(hl);
-            });
-            content.add(vl);
-        }
-        else {
-            content.add(data.getRawResponse());
+        else if (data.getDocumentsResponse() != null) {
+
+            if (!data.getDocumentsResponse().getCirdaxDocumentsDTOList().isEmpty()) {
+                title.setText("Documents");
+                VerticalLayout vl = new VerticalLayout();
+                data.getDocumentsResponse().getCirdaxDocumentsDTOList().forEach(e -> {
+                    HorizontalLayout hl = new HorizontalLayout();
+                    if (StringUtils.hasText(e.getDeepLinkUrl())) {
+                        Anchor a = new Anchor(e.getDeepLinkUrl(), e.getDocumentFileName());
+                        a.setTarget("_blank");
+                        hl.add(a);
+                    }
+                    else {
+                        hl.add(new Text(e.getDocumentFileName()));
+                    }
+
+                    vl.add(hl);
+                });
+                content.add(vl);
+            }
+
+            else {
+                title.setText("Documents response: ");
+                content.add(data.getDocumentsResponse().getRawResponse());
+            }
         }
 
         open();
