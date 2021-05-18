@@ -41,7 +41,7 @@ public class DocumentsResponseAccessDialog extends Dialog {
         content.removeAll();
 
         if (data.getAccessResponse() != null) {
-            title.setText("Request Access response: ");
+            title.setText("RequestUoiAccessToken response: ");
             content.add(data.getAccessResponse().getRawResponse());
         }
 
@@ -67,7 +67,7 @@ public class DocumentsResponseAccessDialog extends Dialog {
             }
 
             else {
-                title.setText("Documents response: ");
+                title.setText("UoiQueryDocuments response: ");
                 content.add(data.getDocumentsResponse().getRawResponse());
             }
         }
