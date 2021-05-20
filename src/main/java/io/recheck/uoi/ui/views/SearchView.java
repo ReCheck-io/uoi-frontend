@@ -16,7 +16,6 @@ import io.recheck.uoi.ui.components.LayoutTabs;
 import io.recheck.uoi.ui.components.SearchByPropertiesLayoutTab;
 import io.recheck.uoi.ui.components.SearchByUoiLayoutTab;
 import io.recheck.uoi.ui.components.uoiGrid.UOIGrid;
-import org.springframework.http.ResponseEntity;
 
 import java.util.Collections;
 import java.util.List;
@@ -71,15 +70,13 @@ public class SearchView extends BaseView {
 
         searchByUoiLayout.searchClickListener(event -> {
             toInitState();
-            ResponseEntity<String> responseEntity = restClientService.searchByUoi(searchByUoiLayout.getData());
-            List<UOINode> uoiNodes = restClientService.getSearchByUOIResult(responseEntity);
+            List<UOINode> uoiNodes = restClientService.searchByUoi(searchByUoiLayout.getData());
             uoiGrid.setItems(uoiNodes);
         });
 
         searchByPropertiesLayout.searchClickListener(event -> {
             toInitState();
-            ResponseEntity<String> responseEntity = restClientService.searchByProperties(searchByPropertiesLayout.getData());
-            List<UOINode> uoiNodes = restClientService.getSearchByPropertiesResult(responseEntity);
+            List<UOINode> uoiNodes = restClientService.searchByProperties(searchByPropertiesLayout.getData());
             uoiGrid.setItems(uoiNodes);
         });
 

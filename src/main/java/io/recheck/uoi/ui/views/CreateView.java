@@ -11,10 +11,12 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import io.recheck.SessionService;
 import io.recheck.accounts.AccountService;
+import io.recheck.exceptionhandler.ApiError;
 import io.recheck.rest.RestClientService;
 import io.recheck.rest.dto.NewUoiDTO;
 import io.recheck.uoi.entity.UOINode;
 import io.recheck.uoi.ui.components.uoiGrid.UOIGrid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 
@@ -68,15 +70,25 @@ public class CreateView extends BaseView {
 
         uoiFormLayout.createClickListener(e -> {
             NewUoiDTO newUoiDTO = new NewUoiDTO(uoiFormLayout.getData());
-            if (StringUtils.hasText(newUoiDTO.getCountryCode()) || newUoiDTO.getLevel() != null) {
-                ResponseEntity<UOINode> uoiNodeResponseEntity = restClientService.newUoi(newUoiDTO);
-                UOINode savedUoiNode = uoiNodeResponseEntity.getBody();
+            ResponseEntity uoiNodeResponseEntity = restClientService.newUoi(newUoiDTO);
+            HttpStatus statusCode = uoiNodeResponseEntity.getStatusCode();
+            if (statusCode.value() == 200) {
+                UOINode savedUoiNode = (UOINode) uoiNodeResponseEntity.getBody();
                 uoiGrid.addItem(savedUoiNode);
                 if (StringUtils.hasText(savedUoiNode.getParentUOI())) {
                     uoiGrid.addChild(savedUoiNode.getParentUOI(), savedUoiNode.getUoi());
                 }
+                toInitState();
             }
-            toInitState();
+            else if (statusCode.value() > 400 && statusCode.value() < 500) {
+                ApiError body = (ApiError) uoiNodeResponseEntity.getBody();
+                errorDialog.open(body);
+            }
+            else if (statusCode.value() >= 500) {
+                String body = (String) uoiNodeResponseEntity.getBody();
+                errorDialog.open(body);
+            }
+
         });
 
         super.initListeners();

@@ -5,8 +5,12 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import io.recheck.SessionService;
 import io.recheck.accounts.AccountService;
 import io.recheck.accounts.entity.Account;
+import io.recheck.exceptionhandler.ApiError;
 import io.recheck.rest.RestClientService;
-import io.recheck.rest.dto.*;
+import io.recheck.rest.dto.CirdaxAccessRequestDTO;
+import io.recheck.rest.dto.CirdaxResponseWrapperDTO;
+import io.recheck.rest.dto.UpdatePropertiesDTO;
+import io.recheck.rest.dto.UpdateRelationshipDTO;
 import io.recheck.uoi.entity.UOINode;
 import io.recheck.uoi.ui.components.*;
 import io.recheck.uoi.ui.components.map.ComponentMap;
@@ -17,6 +21,7 @@ import io.recheck.uoi.ui.components.model.RequestAccessModel;
 import io.recheck.uoi.ui.components.model.UOIFormModel;
 import io.recheck.uoi.ui.components.uoiGrid.UOIGrid;
 import io.recheck.uoi.ui.components.uoiGrid.UOIGridListeners;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Optional;
@@ -34,6 +39,7 @@ public class BaseView extends Div {
     protected DocumentsRequestAccessDialog documentsRequestAccessDialog = new DocumentsRequestAccessDialog();
     protected DocumentsRequestAccessListeners documentsRequestAccessListeners;
     protected DocumentsResponseAccessDialog documentsResponseAccessDialog = new DocumentsResponseAccessDialog();
+    protected ErrorDialog errorDialog = new ErrorDialog();
 
     protected UOIGrid uoiGrid;
     protected UOIGridListeners uoiGridListeners;
@@ -53,12 +59,21 @@ public class BaseView extends Div {
             UOIFormModel uoiFormModel = uoiFormLayout.getData();
 
             UpdateRelationshipDTO updateRelationshipDTO = new UpdateRelationshipDTO(uoiFormModel.getUoi(), uoiFormModel.getParentUOI());
-            restClientService.makeRelationship(updateRelationshipDTO);
-
-            uoiGrid.setParentUoi(updateRelationshipDTO.getChildNode(), updateRelationshipDTO.getParentNode());
-            uoiGrid.addChild(updateRelationshipDTO.getParentNode(), updateRelationshipDTO.getChildNode());
-
-            toInitState();
+            ResponseEntity makeRelationshipEntity = restClientService.makeRelationship(updateRelationshipDTO);
+            HttpStatus statusCode = makeRelationshipEntity.getStatusCode();
+            if (statusCode.value() == 200) {
+                uoiGrid.setParentUoi(updateRelationshipDTO.getChildNode(), updateRelationshipDTO.getParentNode());
+                uoiGrid.addChild(updateRelationshipDTO.getParentNode(), updateRelationshipDTO.getChildNode());
+                toInitState();
+            }
+            else if (statusCode.value() > 400 && statusCode.value() < 500) {
+                ApiError body = (ApiError) makeRelationshipEntity.getBody();
+                errorDialog.open(body);
+            }
+            else if (statusCode.value() >= 500) {
+                String body = (String) makeRelationshipEntity.getBody();
+                errorDialog.open(body);
+            }
         });
 
         uoiFormLayout.cancelClickListener(e -> toInitState());
@@ -67,9 +82,7 @@ public class BaseView extends Div {
 
         propertiesLayout.updateClickListener(e -> {
             PropertiesModel propertiesModel = propertiesLayout.getData();
-            propertiesModel.getProperties().forEach((key, value) -> {
-                restClientService.updateProperties(new UpdatePropertiesDTO(propertiesModel.getUoi(), key, value));
-            });
+            propertiesModel.getProperties().forEach((key, value) -> restClientService.updateProperties(new UpdatePropertiesDTO(propertiesModel.getUoi(), key, value)));
 
             uoiGrid.setProperties(propertiesModel.getUoi(), propertiesModel.getProperties());
 
@@ -95,6 +108,7 @@ public class BaseView extends Div {
             else {
                 documentsRequestAccessDialog.invalidAccount();
             }
+            documentsLayout.updateAccessButtons(account.isPresent());
         });
 
         documentsRequestAccessListeners = (uoi, account) -> {
@@ -130,14 +144,19 @@ public class BaseView extends Div {
                 DocumentsModel model = new DocumentsModel(uoiNode);
                 DocumentsListeners listeners = (source) -> {
                     Optional<Account> loggedAccount = accountService.getLoggedAccount();
-                    if (loggedAccount.isPresent()) {
+                    boolean loggedAccountPresent = loggedAccount.isPresent();
+                    if (loggedAccountPresent) {
                         documentsRequestAccessListeners.doIfAccountPresent(model.getUoi(), loggedAccount.get());
                     }
                     else {
                         documentsRequestAccessDialog.open(model.getUoi());
                     }
                 };
+
+                Optional<Account> loggedAccount = accountService.getLoggedAccount();
+                boolean loggedAccountPresent = loggedAccount.isPresent();
                 documentsLayout.setDataAndVisible(model, listeners, true);
+                documentsLayout.updateAccessButtons(loggedAccountPresent);
             }
         };
 

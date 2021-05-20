@@ -24,9 +24,7 @@ public class DocumentsResponseAccessDialog extends Dialog {
     }
 
     public void initListeners() {
-        closeButton.addClickListener(listener -> {
-            close();
-        });
+        closeButton.addClickListener(listener -> close());
     }
 
     public void initLayout() {
@@ -41,7 +39,7 @@ public class DocumentsResponseAccessDialog extends Dialog {
         content.removeAll();
 
         if (data.getAccessResponse() != null) {
-            title.setText("RequestUoiAccessToken response: ");
+            title.setText("Request Uoi Access Token response: ");
             content.add(data.getAccessResponse().getRawResponse());
         }
 
@@ -67,7 +65,7 @@ public class DocumentsResponseAccessDialog extends Dialog {
             }
 
             else {
-                title.setText("UoiQueryDocuments response: ");
+                title.setText("Uoi Query Documents response: ");
                 content.add(data.getDocumentsResponse().getRawResponse());
             }
         }
