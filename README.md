@@ -1,6 +1,6 @@
 # UOI Frontend
 
-UOI Frontend is a web application accessed via web browser which make possible the creation, update and searching of the Unique object identifier (UOI) through service provider called UOI Backend (which implements an API). Frontend and Backend exchange messages in a request–response messaging pattern.
+UOI Frontend is a web application accessed via web browser which makes possible the creation, updating and searching of the Unique object identifier (UOI) through service provider called UOI Backend (which implements an API). Frontend and Backend exchange messages in a request–response messaging pattern.
 
 This repository contains the source code of the UOI Frontend (no UOI backend API code here)
 
