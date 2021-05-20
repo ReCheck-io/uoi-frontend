@@ -66,12 +66,8 @@ public class BaseView extends Div {
                 uoiGrid.addChild(updateRelationshipDTO.getParentNode(), updateRelationshipDTO.getChildNode());
                 toInitState();
             }
-            else if (statusCode.value() > 400 && statusCode.value() < 500) {
+            else {
                 ApiError body = (ApiError) makeRelationshipEntity.getBody();
-                errorDialog.open(body);
-            }
-            else if (statusCode.value() >= 500) {
-                String body = (String) makeRelationshipEntity.getBody();
                 errorDialog.open(body);
             }
         });
@@ -101,21 +97,27 @@ public class BaseView extends Div {
             RequestAccessModel data = documentsRequestAccessDialog.getData();
             Optional<Account> account = accountService.findAccountByUserName(data.getUsername());
             if (account.isPresent()) {
-                accountService.setLoggedAccount(account.get());
                 documentsRequestAccessDialog.close();
                 documentsRequestAccessListeners.doIfAccountPresent(data.getUoi(), account.get());
             }
-            else {
-                documentsRequestAccessDialog.invalidAccount();
-            }
-            documentsLayout.updateAccessButtons(account.isPresent());
         });
 
         documentsRequestAccessListeners = (uoi, account) -> {
             CirdaxAccessRequestDTO accessDTO = new CirdaxAccessRequestDTO(uoi, account.getUserName(), "UOI Frontend");
-            ResponseEntity<CirdaxResponseWrapperDTO> cirdaxDocumentsResponseDTOResponseEntity = restClientService.requestAccess(accessDTO);
-            CirdaxResponseWrapperDTO cirdaxResponseWrapper = cirdaxDocumentsResponseDTOResponseEntity.getBody();
-            documentsResponseAccessDialog.open(cirdaxResponseWrapper);
+            ResponseEntity cirdaxDocumentsResponseEntity = restClientService.requestAccess(accessDTO);
+
+            HttpStatus statusCode = cirdaxDocumentsResponseEntity.getStatusCode();
+            if (statusCode.value() == 200) {
+                CirdaxResponseWrapperDTO cirdaxResponseWrapper = (CirdaxResponseWrapperDTO) cirdaxDocumentsResponseEntity.getBody();
+                documentsResponseAccessDialog.open(cirdaxResponseWrapper);
+                documentsLayout.updateAccessButtons(true);
+            }
+            else {
+                ApiError body = (ApiError) cirdaxDocumentsResponseEntity.getBody();
+                errorDialog.open(body);
+                accountService.logout();
+            }
+
         };
 
 

@@ -80,12 +80,8 @@ public class CreateView extends BaseView {
                 }
                 toInitState();
             }
-            else if (statusCode.value() > 400 && statusCode.value() < 500) {
+            else {
                 ApiError body = (ApiError) uoiNodeResponseEntity.getBody();
-                errorDialog.open(body);
-            }
-            else if (statusCode.value() >= 500) {
-                String body = (String) uoiNodeResponseEntity.getBody();
                 errorDialog.open(body);
             }
 

@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -48,8 +48,8 @@ public class RestClientService implements Serializable {
             ResponseEntity<CirdaxResponseWrapperDTO> responseEntity = restTemplate.exchange(builder.toUriString(), HttpMethod.POST, entity, CirdaxResponseWrapperDTO.class);
             log.debug("Receive {}", responseEntity);
             return responseEntity;
-        } catch (HttpClientErrorException ex) {
-            return httpClientErrorToResponse(ex);
+        } catch (HttpStatusCodeException ex) {
+            return httpStatusCodeException(ex);
         }
     }
 
@@ -62,8 +62,8 @@ public class RestClientService implements Serializable {
             ResponseEntity<UOINode> responseEntity = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, entity, UOINode.class);
             log.debug("Receive {}", responseEntity);
             return responseEntity;
-        } catch (HttpClientErrorException ex) {
-            return httpClientErrorToResponse(ex);
+        } catch (HttpStatusCodeException ex) {
+            return httpStatusCodeException(ex);
         }
     }
 
@@ -76,8 +76,8 @@ public class RestClientService implements Serializable {
             ResponseEntity<UOINode> responseEntity = restTemplate.exchange(builder.toUriString(), HttpMethod.PUT, entity, UOINode.class);
             log.debug("Receive {}", responseEntity);
             return responseEntity;
-        } catch (HttpClientErrorException ex) {
-            return httpClientErrorToResponse(ex);
+        } catch (HttpStatusCodeException ex) {
+            return httpStatusCodeException(ex);
         }
     }
 
@@ -90,8 +90,8 @@ public class RestClientService implements Serializable {
             ResponseEntity<String> responseEntity = restTemplate.exchange(builder.toUriString(), HttpMethod.PUT, entity, String.class);
             log.debug("Receive {}", responseEntity);
             return responseEntity;
-        } catch (HttpClientErrorException ex) {
-            return httpClientErrorToResponse(ex);
+        } catch (HttpStatusCodeException ex) {
+            return httpStatusCodeException(ex);
         }
     }
 
@@ -104,8 +104,8 @@ public class RestClientService implements Serializable {
             ResponseEntity<String> responseEntity = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, entity, String.class);
             log.debug("Receive {}", responseEntity);
             return getSearchByUOIResult(responseEntity);
-        } catch (HttpClientErrorException ex) {
-            httpClientErrorToResponse(ex);
+        } catch (HttpStatusCodeException ex) {
+            httpStatusCodeException(ex);
             return Collections.emptyList();
         }
     }
@@ -119,8 +119,8 @@ public class RestClientService implements Serializable {
             ResponseEntity<String> responseEntity = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, entity, String.class);
             log.debug("Receive {}", responseEntity);
             return getSearchByPropertiesResult(responseEntity);
-        } catch (HttpClientErrorException ex) {
-            httpClientErrorToResponse(ex);
+        } catch (HttpStatusCodeException ex) {
+            httpStatusCodeException(ex);
             return Collections.emptyList();
         }
     }
@@ -134,8 +134,8 @@ public class RestClientService implements Serializable {
             ResponseEntity<String> responseEntity = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, entity, String.class);
             log.debug("Receive {}", responseEntity);
             return responseEntity;
-        } catch (HttpClientErrorException ex) {
-            return httpClientErrorToResponse(ex);
+        } catch (HttpStatusCodeException ex) {
+            return httpStatusCodeException(ex);
         }
     }
 
@@ -168,7 +168,7 @@ public class RestClientService implements Serializable {
         return Collections.emptyList();
     }
 
-    private ResponseEntity httpClientErrorToResponse(HttpClientErrorException ex) {
+    private ResponseEntity httpStatusCodeException(HttpStatusCodeException ex) {
         log.info("{}", ex.getMessage());
         ObjectMapper objectMapper = new ObjectMapper();
         try {

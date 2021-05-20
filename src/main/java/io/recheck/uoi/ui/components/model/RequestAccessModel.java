@@ -8,7 +8,6 @@ import lombok.Data;
 public class RequestAccessModel {
 
     private String username;
-    private String password;
     private String uoi;
 
 }
